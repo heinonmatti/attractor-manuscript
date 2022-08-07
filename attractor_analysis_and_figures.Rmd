@@ -2,7 +2,7 @@
 title: "Demonstration of movements through an attractor landscape"
 ---
 
-Source code for this document is found [here]().
+Source code for this document is found [here](https://raw.githubusercontent.com/heinonmatti/attractor-manuscript/main/attractor_analysis_and_figures.Rmd).
 
 # {-}
 
@@ -16,15 +16,15 @@ $~$
 
 The dataset used here is provided via [The University of Maryland Social Data Science Center Global COVID-19 Trends and Impact Survey, in partnership with Facebook](https://gisumd.github.io/COVID-19-API-Documentation/). It contains samples of Facebook users agreeing to statements about the COVID-19 pandemic. We use the data for Finland, and have opted for the data not weighted (by Facebook) to match the population. The differences between weighted and unweighted datasets are not large (especially as smoothing is applied), but the weights might induce distortions: For example, a German person with a moderate sampling weigh in the German context but a high one in the Finnish context, can be reported as currently residing in Finland. Facebook does not have access to survey data, and University of Maryland does not have access to Facebook data; hence, the person would result in the Finnish dataset, but with their German sampling weight.
 
-Relevant articles detailing the data collection methodology and weighting procedures:
+References detailing the data collection methodology and weighting procedures:
 
-Astley, C. M., Tuli, G., Mc Cord, K. A., Cohn, E. L., Rader, B., Varrelman, T. J., Chiu, S. L., Deng, X., Stewart, K., Farag, T. H., Barkume, K. M., LaRocca, S., Morris, K. A., Kreuter, F., & Brownstein, J. S. (2021). Global monitoring of the impact of the COVID-19 pandemic through online surveys sampled from the Facebook user base. Proceedings of the National Academy of Sciences, 118(51), e2111455118. https://doi.org/10.1073/pnas.2111455118
+1. Astley, C. M., Tuli, G., Mc Cord, K. A., Cohn, E. L., Rader, B., Varrelman, T. J., Chiu, S. L., Deng, X., Stewart, K., Farag, T. H., Barkume, K. M., LaRocca, S., Morris, K. A., Kreuter, F., & Brownstein, J. S. (2021). Global monitoring of the impact of the COVID-19 pandemic through online surveys sampled from the Facebook user base. Proceedings of the National Academy of Sciences, 118(51), e2111455118. https://doi.org/10.1073/pnas.2111455118
 
-Barkay, N., Cobb, C., Eilat, R., Galili, T., Haimovich, D., LaRocca, S., Morris, K., & Sarig, T. (2020). Weights and Methodology Brief for the COVID-19 Symptom Survey by University of Maryland and Carnegie Mellon University, in Partnership with Facebook. ArXiv:2009.14675 [Cs]. http://arxiv.org/abs/2009.14675
+2. Barkay, N., Cobb, C., Eilat, R., Galili, T., Haimovich, D., LaRocca, S., Morris, K., & Sarig, T. (2020). Weights and Methodology Brief for the COVID-19 Symptom Survey by University of Maryland and Carnegie Mellon University, in Partnership with Facebook. ArXiv:2009.14675 [Cs]. http://arxiv.org/abs/2009.14675
 
-Fan, J., Li, Y., Stewart, K., Kommareddy, A. R., Garcia, A., O’Brien, J., Bradford, A., Deng, X., Chiu, S., Kreuter, F., Barkay, N., Bilinski, A., Kim, B., Galili, T., Haimovich, D., LaRocca, S., Presser, S., Morris, K., Salomon, J. A., … Vannette, D. (2020). The University of Maryland Social Data Science Center Global COVID-19 Trends and Impact Survey, in partnership with Facebook. The Global COVID-19 Trends and Impact Survey Open Data API. https://covidmap.umd.edu/api.html
+3. Fan, J., Li, Y., Stewart, K., Kommareddy, A. R., Garcia, A., O’Brien, J., Bradford, A., Deng, X., Chiu, S., Kreuter, F., Barkay, N., Bilinski, A., Kim, B., Galili, T., Haimovich, D., LaRocca, S., Presser, S., Morris, K., Salomon, J. A., … Vannette, D. (2020). The University of Maryland Social Data Science Center Global COVID-19 Trends and Impact Survey, in partnership with Facebook. The Global COVID-19 Trends and Impact Survey Open Data API. https://covidmap.umd.edu/api.html
 
-In the following code chunk, we download and preprocess the data using R.
+In the following code chunk, we download and preprocess the data using R. To see the code, please click the "Code"-button on the right hand side below. For the source code of data_preparation.R, which was used to download the data from CTIS API (and can be repurposed to downloading other countries' data by changing the value of _country_in_question_), see [here](https://raw.githubusercontent.com/heinonmatti/attractor-manuscript/main/data_preparation.R).
 
 ```{r setup, warning = FALSE, message = FALSE, dpi = 300}
 knitr::opts_chunk$set(echo = TRUE, 
@@ -201,7 +201,7 @@ df_analysis_rescaled_smoothed %>%
 
 ## Figure 1 of the manuscript
 
-Code below creates the first figure of the manuscript, depicting nonlinear change.
+Code below creates the first figure of the manuscript, depicting nonlinear change. Note that there is a very long dataset of this particular variable, but the survey items used for the main analysis were only added much later (that is, June 2021). Different survey versions can be found [here](https://gisumd.github.io/COVID-19-API-Documentation/docs/survey_instruments.html).  
 
 ```{r}
 
