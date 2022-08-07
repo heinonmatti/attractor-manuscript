@@ -1,0 +1,689 @@
+---
+title: "Demonstration of movements through an attractor landscape"
+---
+
+Source code for this document is found [here]().
+
+# {-}
+
+---
+
+$~$
+
+# Dataset description
+
+$~$
+
+The dataset used here is provided via [The University of Maryland Social Data Science Center Global COVID-19 Trends and Impact Survey, in partnership with Facebook](https://gisumd.github.io/COVID-19-API-Documentation/). It contains samples of Facebook users agreeing to statements about the COVID-19 pandemic. We use the data for Finland, and have opted for the data not weighted (by Facebook) to match the population. The differences between weighted and unweighted datasets are not large (especially as smoothing is applied), but the weights might induce distortions: For example, a German person with a moderate sampling weigh in the German context but a high one in the Finnish context, can be reported as currently residing in Finland. Facebook does not have access to survey data, and University of Maryland does not have access to Facebook data; hence, the person would result in the Finnish dataset, but with their German sampling weight.
+
+Relevant articles detailing the data collection methodology and weighting procedures:
+
+Astley, C. M., Tuli, G., Mc Cord, K. A., Cohn, E. L., Rader, B., Varrelman, T. J., Chiu, S. L., Deng, X., Stewart, K., Farag, T. H., Barkume, K. M., LaRocca, S., Morris, K. A., Kreuter, F., & Brownstein, J. S. (2021). Global monitoring of the impact of the COVID-19 pandemic through online surveys sampled from the Facebook user base. Proceedings of the National Academy of Sciences, 118(51), e2111455118. https://doi.org/10.1073/pnas.2111455118
+
+Barkay, N., Cobb, C., Eilat, R., Galili, T., Haimovich, D., LaRocca, S., Morris, K., & Sarig, T. (2020). Weights and Methodology Brief for the COVID-19 Symptom Survey by University of Maryland and Carnegie Mellon University, in Partnership with Facebook. ArXiv:2009.14675 [Cs]. http://arxiv.org/abs/2009.14675
+
+Fan, J., Li, Y., Stewart, K., Kommareddy, A. R., Garcia, A., O’Brien, J., Bradford, A., Deng, X., Chiu, S., Kreuter, F., Barkay, N., Bilinski, A., Kim, B., Galili, T., Haimovich, D., LaRocca, S., Presser, S., Morris, K., Salomon, J. A., … Vannette, D. (2020). The University of Maryland Social Data Science Center Global COVID-19 Trends and Impact Survey, in partnership with Facebook. The Global COVID-19 Trends and Impact Survey Open Data API. https://covidmap.umd.edu/api.html
+
+In the following code chunk, we download and preprocess the data using R.
+
+```{r setup, warning = FALSE, message = FALSE, dpi = 300}
+knitr::opts_chunk$set(echo = TRUE, 
+                      warning = FALSE,
+                      message = FALSE,
+                      error = FALSE,
+                      cache = TRUE, 
+                      collapse = TRUE,
+                      eval = TRUE,
+                      dpi = 300)
+
+# devtools::install_github("fredhasselman/casnet")
+
+library(tidyverse)
+
+## Download comprehensive datasets from CTIS API:
+# source("data_preparation.R")
+
+country_in_question <- "Finland"
+region_in_question <- ""
+
+df_masks_allwaves <- readr::read_csv(
+  file = paste0("./data/",
+                country_in_question, region_in_question, 
+                "_CTIS_unweighted_allwaves",
+                ".csv")) %>% 
+  dplyr::select(date, percent_mc_unw)
+  
+df_orig <- readr::read_csv(
+  file = paste0("./data/",
+                country_in_question, region_in_question, 
+                "_CTIS_unweighted",
+                ".csv"))
+
+figure_identifier <- paste0(country_in_question)
+dir.create(paste0("attractor-viz/"))
+dir.create(paste0("attractor-viz/", figure_identifier, "/"))
+
+# head(df_orig %>% dplyr::select(date, everything()))
+
+# purrr::map(.x = df_analysis,
+#            .f = ~sum(is.na(.x)))
+```
+
+# Data preparation
+
+$~$
+
+From the original dataset, we choose eight variables of protective behaviours featuring no missing values. These variables consist of:
+
+* % of respondents who wore a mask all the time or most of the time when in public.
+* % of respondents who report intentionally avoiding contact with other people all the time or most of the time.
+
+... As well as six activities performed during the last 24 hours: 
+
+* % of respondents who worked outside their home in the past 24 hours.
+* % of respondents who spent time with someone who hasn't stayed with them in the past 24 hours.
+* % of respondents who went to a market, grocery store, or pharmacy in the past 24 hours.
+* % of respondents who went to a bar, restaurant, or cafe in the past 24 hours.
+* % of respondents who used public transport in the past 24 hours.
+* % of respondents who attended an event with more than 10 people in the past 24 hours.
+
+The variables concerning the aforementioned six activities are reverse-coded, hence a larger value of each variable indicates a lower risk of transmission.
+
+Each variable is normalised to unit scale by dividing the original values by the maximum value of that variable. This results in a score, which indicates variability in relation to the magnitude of the variable, avoiding the "stretching effect" which happens if one rescales to [0, 1] (i.e. a variable which is mostly constant can end up depicting huge fluctuations if forced to extend within a relatively large range).  
+
+In the current analysis, we are not concerned with intra-week fluctuations; hence, we apply a smoothing filter: Each variable is processed with a rolling 7-day average.
+
+```{r, warning = FALSE, message = FALSE, dpi = 300}
+df_analysis <- df_orig %>% 
+  # Choose variables with protective behaviours and no missings
+  dplyr::select(date, matches(c("activity", 
+                                "percent_mc", 
+                                "pct_avoid_contact"))) %>% 
+  # Reverse code variables such as more means riskier behaviours
+  dplyr::mutate(across(
+    contains("activity"),
+    ~ 1 - .))
+
+# # Check that there are no missing values:
+# df_analysis %>% 
+#   purrr::map(.x = ., .f = ~ sum(is.na(.x)))
+
+# Rescale and smooth (7-day mean) data
+df_analysis_rescaled <- df_analysis %>% 
+  dplyr::mutate(across(where(is.numeric),
+                       ~./max(.)))
+
+df_analysis_rescaled_smoothed <- df_analysis_rescaled %>% 
+  dplyr::mutate(across(where(is.numeric),
+                       ~slider::slide_dbl(
+                         .x = ., 
+                         .f = ~mean(.x),
+                         .before = 6, 
+                         .after = 0, 
+                         .complete = FALSE)))
+                       # ~scales::rescale(., to = c(0, 1))))
+```
+
+## Visual inspection of dataset 
+
+$~$
+
+Next, we inspect the time series to verify that recoding and other preparation steps worked as intended.
+
+```{r, warning = FALSE, message = FALSE, dpi = 300}
+df_analysis %>% 
+  tidyr::pivot_longer(cols = -date) %>% 
+  ggplot(aes(x = date,
+             y = value,
+             colour = name)) +
+  geom_line() +
+  scale_colour_viridis_d(option = "viridis",
+                         end = 0.8) +
+  scale_x_date(date_labels = "%Y-%m") +
+  labs(x = "Date",
+       y = "% reporting activity",
+       title = "Unsmoothed reverse-coded data") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  facet_wrap(~name)
+
+df_analysis_rescaled %>% 
+  tidyr::pivot_longer(cols = -date) %>% 
+  ggplot(aes(x = date,
+             y = value,
+             colour = name)) +
+  geom_line() +
+  scale_colour_viridis_d(option = "viridis",
+                         end = 0.8) +
+  scale_x_date(date_labels = "%Y-%m") +
+  labs(x = "Date",
+       y = "% reporting activity",
+       title = "Reverse-coded data divided by variable's maximum") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  facet_wrap(~name)
+
+df_analysis_rescaled_smoothed %>% 
+  tidyr::pivot_longer(cols = -date) %>% 
+  ggplot(aes(x = date,
+             y = value,
+             colour = name)) +
+  geom_line() +
+  scale_colour_viridis_d(option = "viridis",
+                         end = 0.8) +
+  scale_x_date(date_labels = "%Y-%m") +
+  labs(x = "Date",
+       y = "% reporting activity",
+       title = "Smoothed reverse-coded data divided by variable's maximum") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  facet_wrap(~name)
+
+
+### If you want to display a simple mean of the variables
+# df_analysis %>% 
+#   dplyr::mutate(mean_of_original_rev_values = rowMeans(select(., -date), 
+#                                                        na.rm = TRUE)) %>% 
+#   ggplot(aes(x = date,
+#              y = mean_of_original_rev_values)) +
+#   geom_line() +
+#   geom_point() +
+#   scale_colour_viridis_d(option = "viridis",
+#                          end = 0.8) +
+#   scale_x_date(date_labels = "%Y-%m") +
+#   labs(x = "Date",
+#        y = "% reporting activity",
+#        title = "Simple mean of variables included in analysis") +
+#   theme_bw() +
+#   theme(legend.position = "none")
+
+```
+
+## Figure 1 of the manuscript
+
+Code below creates the first figure of the manuscript, depicting nonlinear change.
+
+```{r}
+
+masks_for_figure <- df_masks_allwaves %>% 
+  dplyr::mutate(percent_mc_unw = percent_mc_unw * 100) %>% 
+  ggplot(aes(x = date, 
+             y = percent_mc_unw)) +
+  geom_line(colour = viridis::viridis(n = 3,
+                                      direction = -1)[2]) +
+  scale_x_date(date_labels = "%Y-%m",
+               breaks = "2 months",
+               # expand = c(0, 0)
+               ) +
+  scale_y_continuous(expand = c(0, 0)) +
+  coord_cartesian(ylim = c(0, 100)) +
+  labs(
+    title = NULL,
+    # ": Phase types across resolutions and time"),
+    # caption = "Higher values of vertical slices indicate less \"resolution\". Lighter colours indicate better quality. 
+    # Horizontal slices indicate temporal evolution of phases at that resolution.",
+    x = NULL,
+    y = "% self-reported mask-wearing") +
+  theme_bw(base_size = 22) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1),
+        legend.position = "none")
+
+masks_for_figure
+
+ggsave(plot = masks_for_figure,
+       filename = paste0("attractor-viz/", figure_identifier,
+                         "/", figure_identifier, 
+                         "_masks_allwaves", ".png"), 
+       height = 8, width = 16)
+
+```
+
+
+# Perform analysis
+
+$~$
+
+Next, we perform the Cumulative Recurrence Network (or Multidimensional Recurrence Quantification) analysis. The method is described in detail in the references below, but we outline the main points here. A step-by-step explanation of analysis with a single radius value is presented in the [supplementary website of Heino et al. 2021](https://heinonmatti.github.io/complexity-behchange/Recurrence-plots.html). 
+
+Recall that our data consisted of eight time series. To generate a cumulative recurrence network, these time series are considered to trace a path in an 8-dimensional space, where each value is a coordinate. The gist of recurrence-based analyses is quantifying how the system (approximately) returns to a set of coordinates visited previously. We assume that these frequented areas ("phases") correspond to attractors of the system. Note that, here, the term "phase" is used to signify an area (valley) in the attractor landscape, and "state" is used to signify the position of the ball in a low-dimensional visualisation of the landscape.  When each coordinate value is plotted against every other value (see Figure 2 of Hasselman, 2022), a Euclidean distance can be derived to indicate similarity between the two 8-dimensional coordinates (that is, two sets of 8-variable measures; distance between coordinates at e.g. time 1 and time 3). 
+
+The common practice is to choose a value for the radius parameter, which defines a similarity threshold between two points in the 8-dimensional space; distance values above this threshold are considered distant (non-recurring), and those below it are considered close (recurring). As there are no satisfactory rules for choosing the radius parameter in our case, we run the analysis on 40 different radii. 
+
+For each analysis, the recurrence matrix is considered an adjacency matrix of a complex network (i.e. recurrences are the edges, and time points are the nodes). The edges are weighted by their similarity under the threshold value, so that more similar time points are connected by a stronger edge. We set the upper triangle of the adjacency matrix to zero, in order to not use information from the future to determine whether two nodes are connected, leading to a directed recurrence network. This also allows for the method to be used in real time monitoring of a system, without resorting to a sliding window analysis -- thus avoiding accompanying considerations of window size. 
+
+In the last stage of analysis, for each radius value inspected, phases (regions of attraction) are extracted from the recurrence network. The procedure of the algorithm is as follows:
+
+1. Identify the node with the highest strength (i.e. the sum of weights of edges times the number of edges) attached to the node.
+
+2. Identify which nodes connect to this high-strength node, and mark these as belonging to the same phase (area of attraction in the phase space).  
+
+3. Pick a node with the next highest strength, which _does not_ connect to the highest strength node identified previously. Then go to #2 until there are no more unassigned nodes left.
+
+4. Assign the remaining nodes (which connect to nodes assigned to phases in #2, but are not connected to the highest strength node identified in #1), the strongest phase to which they are connected. 
+
+As we perform the analysis for 40 different radius values, we plot the phases derived from each radius as horizontal slices, where each point on the x-axis refers to the corresponding date for the node in question. We assign each phase a colour by taking the mean of all variables at the dates belonging to the same phase. This process is repeated with each new radius parameter, and in the end, the these means are discretized by transforming the variable into an ordered factor. As a result, the height of coloured structures in the plot correspond to many radius values agreeing that there is a transition happening at the edges of the structure. The reason for performing this colouring process is merely to create an intuitive visualisation of a very large dataset; it works in this case as the mean is a decent indicator of phase contents, but can fail in other cases. 
+
+In general, recurrence networks allow us to describe both linear and nonlinear dynamics across all available time scales. Later, we show how, in this case, there is decent correspondence to a more familiar way of inferring movements between attractors from principal component analysis.
+
+$~$
+
+**References and further reading:**
+
+Hasselman, F. (2022). Early Warning Signals in Phase Space: Geometric Resilience Loss Indicators From Multiplex Cumulative Recurrence Networks. Frontiers in Physiology, 13, 859127. https://doi.org/10.3389/fphys.2022.859127
+
+Hasselman, F., & Bosman, A. M. T. (2020). Studying Complex Adaptive Systems with Internal States: A Recurrence Network Approach to the Analysis of Multivariate Time Series Data Representing Self-Reports of Human Experience. Frontiers in Applied Mathematics and Statistics, 6. https://doi.org/10/ggs9tg
+
+Marwan, N. (2011). How to avoid potential pitfalls in recurrence plot based data analysis. International Journal of Bifurcation and Chaos, 21(04), 1003–1017. https://doi.org/10/bk2dt9
+
+Marwan, N., Romano, M. C., Thiel, M., & Kurths, J. (2007). Recurrence plots for the analysis of complex systems. Physics Reports, 438(5), 237–329. https://doi.org/10/fbbwkj
+
+Wallot, S., & Leonardi, G. (2018). Analyzing Multivariate Dynamics Using Cross-Recurrence Quantification Analysis (CRQA), Diagonal-Cross-Recurrence Profiles (DCRP), and Multidimensional Recurrence Quantification Analysis (MdRQA) – A Tutorial in R. Frontiers in Psychology, 9. https://doi.org/10/gfrzvw
+
+Zou, Y., Donner, R. V., Marwan, N., Donges, J. F., & Kurths, J. (2019). Complex network approaches to nonlinear time series analysis. Physics Reports, 787, 1–97. https://doi.org/10/gf3ckk
+
+
+```{r, warning = FALSE, message = FALSE, dpi = 300}
+df_analysis_rescaled_smoothed_dates <- df_analysis_rescaled_smoothed %>%
+  dplyr::select(date) 
+
+df_analysis_rescaled_smoothed_nodate <- df_analysis_rescaled_smoothed %>% 
+  dplyr::select(-date) 
+
+# Fire up all cores
+all_cores <- parallel::detectCores(logical = FALSE)
+cl <- parallel::makePSOCKcluster(all_cores)
+doParallel::registerDoParallel(cl) 
+
+start_time <- Sys.time()
+
+# Placeholders for values to come
+rn_list <- list()
+phase_df_list <- list()
+# Range of radius parameters to explore
+radius_values <- seq(from = 0.01, to = 0.40, length.out = 40) 
+
+# Run analysis on each of the aforementioned radius parameter values
+# Note: An error in casnet::rn_phases() is usually caused by setting 
+# the "from = " value above too low.
+for (i in 1:length(radius_values)){
+  rn_list[[i]] <- casnet::rn(y1 = df_analysis_rescaled_smoothed_nodate,
+                             doEmbed = FALSE,
+                             weighted = TRUE,
+                             weightedBy = "si",
+                             directed = TRUE,
+                             doPlot = FALSE,
+                             # returnGraph = TRUE,
+                             emRad = radius_values[i],
+                             silent = TRUE)
+  
+  phase_df_list[[i]] <- casnet::rn_phases(RN = rn_list[[i]],
+                                          standardise = "unit",
+                                          maxPhases = 1000,
+                                          minStatesinPhase = 1,
+                                          returnGraph = FALSE,
+                                          doPhaseProfilePlot = FALSE,
+                                          doSpiralPlot = FALSE,
+                                          returnCentroid = "median.mad",
+                                          cleanUp = TRUE,
+                                          excludeNorec = FALSE,
+                                          excludeOther = FALSE)
+  # print(paste0("Completed ", i, " out of ", 
+  #              length(radius_values), " in ",
+  #              round(Sys.time() - start_time, digits = 2),
+  #              " since ", start_time))
+}
+
+### This does not work in the current version:
+# casnet::rp_measures(rn_list[[i]], silent = FALSE, emRad = radius_values[[i]])
+
+# For phase colours in the plot, we use means of original (non-rescaled) values
+dates_and_means_for_colours <- df_analysis_rescaled_smoothed %>% 
+  dplyr::mutate(mean_of_original_rev_values = rowMeans(select(., -date), 
+                                                       na.rm = TRUE))
+
+# Take each dataframe of phase analysis (corresponding to analysis of a single
+# radius parameter value), add colours per phase
+data_for_megaviz <- purrr::map2(
+  .x = phase_df_list,
+  .y = radius_values,
+  .f = ~dplyr::bind_cols(.x$phaseSeries, 
+                         dates_and_means_for_colours) %>%
+    dplyr::mutate(radius_values = .y #%>% round(., digits = 5)
+                  ) %>% 
+    dplyr::group_by(phase_name) %>%
+    dplyr::mutate(phase_colour_stringency = 
+                    mean(mean_of_original_rev_values)) %>% 
+    dplyr::ungroup()) %>% 
+  purrr::reduce(.x = .,
+                .f = dplyr::bind_rows)
+
+# Needed to define width of horizontal colour stripes
+radius_step_size <- diff(radius_values) %>% mean(.)
+
+data_for_megaviz_processed <- data_for_megaviz %>%
+  dplyr::mutate(date_end = lag(date)) %>% 
+  # Discretize the colour by making it an ordered factor based on mean 
+  dplyr::mutate(phase_colour_indicator = forcats::fct_reorder(
+    .f = factor(phase_colour_stringency),
+    .x = phase_colour_stringency,
+    .fun = mean))
+
+megaviz_plot <- data_for_megaviz_processed %>% 
+  ggplot(., aes(x = date,
+                y = radius_values)) +
+  geom_rect(aes(xmin = date, xmax = date_end,
+                ymin = radius_values, ymax = radius_values + 
+                  radius_step_size,# + radius_step_size / 10,
+                fill = phase_colour_indicator)) +
+  ##### If horizontal lines indicating radius are needed:
+  # geom_hline(yintercept = seq(from = 0, to = max(radius_values), by = 0.1),
+  #            alpha = 0.05,
+  #  # See https://github.com/tidyverse/ggplot2/issues/3359 for the why of this:
+  #            data = data.frame()) +
+    geom_hline(yintercept = 0.17,
+               linetype = "dashed",
+               alpha = 0.4) +
+  scale_fill_viridis_d(option = "inferno",
+                       begin = 0.1,
+                       end = 1,
+                       direction = -1) +
+  scale_x_date(date_labels = "%Y-%m",
+               breaks = "1 month",
+               expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0)) +
+  coord_cartesian(ylim = c(min(radius_values), max(radius_values))) +
+  guides(fill = "none") +
+  labs(
+    title = "A)",
+    # ": Phase types across resolutions and time"),
+    # caption = "Higher values of vertical slices indicate less \"resolution\". Lighter colours indicate better quality. 
+    # Horizontal slices indicate temporal evolution of phases at that resolution.",
+    x = NULL,
+    y = "Radius") +
+  theme_bw(base_size = 22) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+
+megaviz_plot
+
+ggsave(plot = megaviz_plot,
+       filename = paste0("attractor-viz/", figure_identifier,
+                         "/", figure_identifier, 
+                         "_megaviz_plot", ".png"), 
+       height = 8, width = 16)
+
+position_of_last_meaningful_radius <- data_for_megaviz_processed %>% 
+  dplyr::group_by(radius_values) %>% 
+  dplyr::summarise(num_of_phases = length(unique(phase_number))) %>%
+  dplyr::mutate(
+    rownum = dplyr::row_number(),
+    # Is there a change to the previous value?
+    absdiff = abs(num_of_phases - lag(num_of_phases)),
+    cumsum_absdiff = cumsum(tidyr::replace_na(absdiff, 0))) %>% 
+  # When cumsum_absdiff is at its maximum, there are no more changes
+  dplyr::filter(cumsum_absdiff == max(cumsum_absdiff)) %>% 
+  # Pull the row number after the last meaningful change
+  dplyr::filter(rownum == min(rownum) + 1 & num_of_phases == 1) %>% 
+  dplyr::pull(rownum)
+
+if(length(position_of_last_meaningful_radius) == 0){
+  stop(paste0("Please increase the maximum radius above ", max(radius_values)))
+} 
+
+last_meaningful_radius <- 
+  radius_values[position_of_last_meaningful_radius]
+
+date_of_peak_radius <- data_for_megaviz_processed %>% 
+  dplyr::filter(radius_values == 
+                  # Extract the position of peak radius 
+                  last_meaningful_radius
+                ) %>% 
+  dplyr::mutate(phasechange = dplyr::case_when(
+    phase_name != lag(phase_name) ~ "1",
+    TRUE ~ "0")) %>% 
+  dplyr::filter(phasechange == "1") %>% 
+  dplyr::slice(1) %>% 
+  dplyr::pull(date)
+
+### For a zoomed-in plot:
+# megaviz_plot +
+#   coord_cartesian(ylim = c(min(radius_values), last_meaningful_radius))
+# 
+# ggsave(filename = paste0("attractor-viz/", figure_identifier,
+#                          "/", figure_identifier, 
+#                          "_megaviz_plot_zoomed", ".png"),
+#        height = 7, width = 10)
+
+end_time <- Sys.time()
+
+end_time - start_time
+
+parallel::stopCluster(cl)
+
+foreach::registerDoSEQ()
+
+```
+
+# Phase contents at chosen radius
+
+$~$
+
+Next, we plot the contents of one representative radius parameter. As this is a pedagogical demonstration, for clarity we omit one 6-day phase which very much resembles that of the one starting in the end of December. 
+
+We use the package `ggridges` due to its flexibility and ease; the rationale and an accessible introduction to interpreting these types of plots can be found in this reference:
+
+Allen, M., Poggiali, D., Whitaker, K., Marshall, T. R., & Kievit, R. A. (2019). Raincloud plots: A multi-platform tool for robust data visualization. Wellcome Open Research, 4, 63. https://doi.org/10/gfxr7w
+
+
+```{r, warning = FALSE, message = FALSE, dpi = 300}
+# Pick a radius to demonstrate the contents
+phases_viz_wide <- data_for_megaviz_processed %>% 
+  dplyr::filter(radius_values == 0.17) 
+
+### Collect dates of the small phase (6 occurrences), to omit from the pedagogical demo
+dates_to_omit <- data_for_megaviz_processed %>% 
+  dplyr::filter(radius_values == 0.17) %>%
+  dplyr::filter(phase_name == "Phase 5") %>% 
+  dplyr::pull(date)
+
+total_number_of_phases <- length(unique(phases_viz_wide$phase_name))
+
+phases_viz_long <- phases_viz_wide %>%
+  dplyr::select(date, phase_colour_indicator) %>% 
+  dplyr::bind_cols(., 
+                   df_analysis_rescaled_smoothed %>% 
+                     dplyr::select(contains("_unw"))) %>% 
+  tidyr::pivot_longer(cols = contains("_unw"),
+                      names_to = "Dimension",
+                      values_to = "Value") %>% 
+  dplyr::mutate(Dimension = stringr::str_replace(string = Dimension,
+                                                 pattern = "dim_",
+                                                 replacement = "")) %>% 
+  dplyr::mutate(
+    Dimension = dplyr::case_when(
+    Dimension == "percent_mc_unw" ~ "Wore a mask",
+    Dimension == "pct_activity_work_outside_home_unw" ~ "Worked from home",
+    Dimension == "pct_activity_shop_unw" ~ "Did not visit shop",
+    Dimension == "pct_activity_restaurant_bar_unw" ~ "Did not visit bar/restaurant",
+    Dimension == "pct_activity_spent_time_unw" ~ "Only met householders",
+    Dimension == "pct_activity_large_event_unw" ~ "Did not attend large events",
+    Dimension == "pct_activity_public_transit_unw" ~ "Did not use public transit",
+    Dimension == "pct_avoid_contact_unw" ~ "Intentionally avoided contacts",
+    )) %>% 
+  dplyr::filter(!(date %in% dates_to_omit))
+
+raincloud_phases_plot <- phases_viz_long %>% 
+  ggplot(aes(fill = phase_colour_indicator,
+             x = Value,
+             y = Dimension)) +
+  ggridges::geom_density_ridges(
+    aes(point_colour = phase_colour_indicator),
+    jittered_points = TRUE, 
+    position = "raincloud",
+    scale = 0.9,
+    alpha = 0.7,
+    point_alpha = 0.9,
+    point_size = 0.2) +
+  scale_discrete_manual("point_colour",
+                        values = viridis::inferno(n = total_number_of_phases,
+                                                  begin = 0.15,
+                                                  end = 0.9,
+                                                  direction = -1),
+                        name = "Phase name"
+  ) +
+  ### If you're not omitting phases, replace this with the commented-out bit
+  scale_fill_manual("Phase name",
+                    values = viridis::inferno(n = total_number_of_phases,
+                                              begin = 0.15,
+                                              end = 0.9,
+                                              direction = -1)[c(1:3, 5)],
+                    name = "Phase name"
+  ) +
+  # scale_fill_viridis_d(option = "inferno",
+  #                      name = "Phase name",
+  #                      begin = 0.15,
+  #                      end = 0.9,
+  #                      direction = -1) +
+  labs(title = "B)",
+       y = NULL,
+       x = "Daily values within regime") +
+  theme_bw(base_size = 22) +
+  theme(legend.position = "none")
+
+raincloud_phases_plot
+
+ggsave(plot = raincloud_phases_plot,
+       filename = paste0("attractor-viz/", figure_identifier, "/", 
+                         figure_identifier, "_phases_raincloud_all", ".png"), 
+       height = 8, width = 8)
+# unique(phases_viz_wide$phase_size)
+```
+
+# Traversing the space of principal components
+
+$~$
+
+Another way that has been proposed to help understand movements within and between attractors in a multidimensional space, is the examination of changes in the values of principal components. To provide an additional pedagogical demonstration of movement in the attractor landscape, we perform principal component analysis with days as rows and variables as columns. Each day's scores on the first two principal components are extracted, and plotted on a two-dimensional visualisation. 
+
+The first day of each month is highlighted with a label, and colour is assigned to match the phases in the previous plot. Again, for visual clarity, we assign the previously described short (6-day) phase the same colour, as the phase that it precedes (starting in the end of 2021).
+
+$~$
+
+**References and further reading:**
+
+Lever, J. J., Leemput, I. A. van de, Weinans, E., Quax, R., Dakos, V., Nes, E. H. van, Bascompte, J., & Scheffer, M. (2020). Foreseeing the future of mutualistic communities beyond collapse. Ecology Letters, 23(1), 2–15. https://doi.org/10/gjfxwm
+
+Weinans, E., Lever, J. J., Bathiany, S., Quax, R., Bascompte, J., van Nes, E. H., Scheffer, M., & van de Leemput, I. A. (2019). Finding the direction of lowest resilience in multivariate complex systems. Journal of The Royal Society Interface, 16(159), 20190629. https://doi.org/10/gjfxwn
+
+Weinans, E., Quax, R., van Nes, E. H., & Leemput, I. A. van de. (2021). Evaluating the performance of multivariate indicators of resilience loss. Scientific Reports, 11(1), 9148. https://doi.org/10.1038/s41598-021-87839-y
+
+
+```{r, warning = FALSE, message = FALSE, dpi = 300}
+
+pcout <- princomp(df_analysis_rescaled_smoothed_nodate, 
+                  scores = TRUE)
+
+pc1 <- pcout$scores[,1]
+pc2 <- pcout$scores[,2]
+
+highlighted_dates <- lubridate::floor_date(df_analysis_rescaled_smoothed$date, 
+                                           unit = "1 month") %>% 
+  unique()
+
+pca_traverse_plot <-
+  dplyr::bind_cols(phases_viz_wide, 
+                   pc1 = pc1, 
+                   pc2 = pc2) %>% 
+  dplyr::mutate(
+    first_of_month = dplyr::case_when(
+      date %in% highlighted_dates ~ as.character(date),
+      TRUE ~ as.character(NA))) %>%
+  ggplot(aes(x = pc1, 
+             y = pc2)) + 
+  geom_path(aes(colour = phase_colour_indicator),
+                group = "phase_colour_stringency",
+            size = 1.2, 
+            show.legend = FALSE) +
+  geom_point(aes(colour = phase_colour_indicator),
+             size = 3,
+             show.legend = FALSE) +
+  ### If you're not omitting phases, replace this with the commented-out bit
+  scale_colour_manual("Phase name",
+                    values = c(viridis::inferno(n = total_number_of_phases,
+                                              begin = 0.25,
+                                              end = 0.9,
+                                              direction = -1)[c(1:3, 5)],
+                               viridis::inferno(n = total_number_of_phases,
+                                              begin = 0.25,
+                                              end = 0.9,
+                                              direction = -1)[5]),
+                    name = "Phase name"
+  ) +
+  # scale_colour_viridis_d(option = "inferno",
+  #                        begin = 0.1,
+  #                        end = 0.9,
+  #                        direction = -1) +
+  # ggrepel::geom_label_repel(aes(label = as.character(date)),
+  #                           size = 2) +
+  ggrepel::geom_label_repel(aes(label = first_of_month),
+                            min.segment.length = 0,
+                           # nudge_x = .025,
+                           nudge_y = -.025,
+                           size = 4) +
+  labs(title = "C)",
+       x = "1st Principal Component",
+       y = "2nd Principal Component") +
+  theme_bw(base_size = 22)
+
+pca_traverse_plot
+
+ggsave(plot = pca_traverse_plot,
+       filename = paste0("attractor-viz/", figure_identifier, "/", 
+                         figure_identifier, "_pca_traverse", ".png"),
+       height = 8, width = 8)
+
+proportions_variance_explained <- pcout$sdev^2 / sum(pcout$sdev^2)
+
+summary(pcout)
+
+```
+
+The first principal component captures `r ((proportions_variance_explained[1] * 100) %>% round(., digits = 1))` % of variance, and the second captures `r ((proportions_variance_explained[2] * 100) %>% round(., digits = 1))` % of variance. This leaves `r ((1 - (proportions_variance_explained[1] + proportions_variance_explained[2])) * 100) %>% round(., digits = 1)` % of variance unused in this analysis.
+
+In other instances, the amount of unaccounted-for variance could be much higher, implying added value for using e.g.  the approach of cumulative recurrence networks (multidimensional recurrence quantification analysis) outlined above.
+
+$~$
+
+# Combine plots
+
+$~$
+
+Code below combines the aforementioned plots to produce Figure 5 of the manuscript.
+
+```{r, warning = FALSE, message = FALSE, dpi = 300}
+composite_plot <- cowplot::plot_grid(
+  plotlist = list(megaviz_plot,
+                  cowplot::plot_grid(raincloud_phases_plot,
+                                     pca_traverse_plot)),
+  nrow = 2)
+
+# composite_plot
+
+ggsave(plot = composite_plot,
+       filename = paste0("attractor-viz/", figure_identifier, "/", 
+                         figure_identifier, "_composite", ".png"),
+       height = 16, width = 16)
+```
+
+# {-}
+
+$~$
+
+# Session information
+
+Description of the R environment can be found below.
+
+```{r session-info, results = 'markup'}
+devtools::session_info()
+
+pander::pander(sessionInfo())
+```

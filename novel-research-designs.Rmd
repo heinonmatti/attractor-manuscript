@@ -1,0 +1,29 @@
+---
+title: "Novel Adaptive Research Designs"
+---
+
+# {-}
+
+---
+
+We have proposed that human behavior operates akin to (although most probably not _exactly_ like) other complex systems observed in physical sciences. When we incorporate hallmarks of complexity -- e.g. learning, adaptation and evolution based on feedback processes -- into our theoretical models and conceptual frameworks, it may be fruitful to also consider, how they can manifest in research designs.
+
+Specifically, there are several methodologies available to intervention researchers, beyond the traditional randomized controlled trial, that can better accommodate the complexity inherent in the behavior change process. These include MOST, SMART, Micro-Randomized Trials (MRT), and Reinforcement Learning (RL). Using somewhat different conceptual approaches, each of these novel designs allow researchers to understand what combination and/or sequence of intervention elements works best, and for whom. For a more detailed discussion of these designs, the reader is encouraged to examine the references provided in the end. Briefly, the four designs can be described as follows. 
+
+The multiphase optimization strategy or MOST framework, previously used in engineering research, includes multiple phases of whittling down or building up multicomponent interventions. The goal is to maximize cost-effectiveness or efficacy of an intervention. The MOST approach often utilizes fractional factorial designs (as opposed to full factorial designs that are often impractical when interventions begin to exceed more than 3 or 4 intervention elements) to test various intervention elements and their lower order interactions. 
+
+Sequential, multiple assignment, randomized trials (SMARTs), again, rooted in the RCT, uses multiple rounds of (re)randomization of intervention participants typically based on their response to a prior round of intervention. The SMART trial can be used to both intensifying treatment amongst initial non-responders as well as stepping down an intervention that may no longer be needed for those who are responding. For example, non-responders to an initial intervention can be randomized to receive a more intensive or otherwise different intervention while others are maintained in their original intervention condition. SMART trials can therefore help identify who benefits most from various intervention intensities and sequences. 
+
+In Micro-Randomized Trials (MRTs), a relative of both MOST and SMART, individuals are randomized repeatedly, even hundreds or thousands of times over the course of an intervention. This may include testing specific types of health communication messages that may vary based on a theoretical principles (Fear message vs. Values message) or different incentive strategies. The goal is identifying which intervention elements and sequence of intervention elements are most effective. 
+
+Finally, Reinforcement Learning (RL) allows every individual to receive an intervention that is optimized to their preferences and needs. Specifically, at regular intervals, such as weekly or monthly, each individual’s behavioral status is assessed (usually by an e-health method), and an algorithm, based on the individual’s prior behavioral pattern and that of other participants, will assign the individual to maintain or switch interventions. This, like a SMART trial, may include intensifying the intervention for those who are not responding well and stepping down the intervention for those who respond. In this way, RL can be thought of as a complex adaptation of the SMART trial, where rather than re-randomizing participants a few times over the course of an intervention, the RL algorithm tries to build the most effective intervention for each individual by continuous checking of their short term response to intervention elements. 
+
+References and further reading:
+
+Collins, L. M. (2018). Optimization of Behavioral, Biobehavioral, and Biomedical Interventions: The Multiphase Optimization Strategy. Springer.
+
+Collins, L. M., & Kugler, K. C. (Eds.) (2018). Optimization of Behavioral, Biobehavioral, and Biomedical Interventions: Advanced Topics. Springer.
+
+Collins, L. M., Murphy, S. A., & Strecher, V. (2007). The Multiphase Optimization Strategy (MOST) and the Sequential Multiple Assignment Randomized Trial (SMART): New Methods for More Potent eHealth Interventions. American Journal of Preventive Medicine, 32(5 Suppl), S112–S118. https://doi.org/10.1016/j.amepre.2007.01.022
+
+Nair, V., Strecher, V., Fagerlin, A., Ubel, P., Resnicow, K., Murphy, S., Little, R., Chakraborty, B., & Zhang, A. (2008). Screening Experiments and the Use of Fractional Factorial Designs in Behavioral Intervention Research. American Journal of Public Health, 98(8), 1354–1359. https://doi.org/10.2105/AJPH.2007.127563

@@ -1,0 +1,27 @@
+name: Attractor Landscapes in Behaviour Change
+author: Matti Heino
+output_dir: docs
+output:
+  html_document:
+    toc: TRUE
+    toc_depth: 4
+    toc_float: TRUE
+    theme: readable # was "readable" before
+    highlight: tango
+    df_print: paged
+    paged_print: true
+    code_folding: hide
+    lib_dir: site_libs
+#    self_contained: FALSE
+navbar:
+  title: Attractor Landscapes in Behaviour Change
+  left:
+  - text: About
+    href: index.html
+  # - text: Manuscript
+  #   href: https://psyarxiv.com/fxgw4
+  - text: Technical supplement
+    href: attractor_analysis_and_figures.html
+  - text: Research design supplement 
+    href: novel-research-designs.html
+

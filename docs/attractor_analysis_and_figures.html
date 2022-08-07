@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Demonstration of movements through an attractor landscape</title>
+
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Attractor Landscapes in Behaviour Change</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">About</a>
+</li>
+<li>
+  <a href="attractor_analysis_and_figures.html">Technical supplement</a>
+</li>
+<li>
+  <a href="novel-research-designs.html">Research design supplement</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Demonstration of movements through an
+attractor landscape</h1>
+
+</div>
+
+
+<p>Source code for this document is found <a href="">here</a>.</p>
+<div id="section" class="section level1 unnumbered">
+<h1 class="unnumbered"></h1>
+<hr />
+<p><span class="math inline">\(~\)</span></p>
+</div>
+<div id="dataset-description" class="section level1">
+<h1>Dataset description</h1>
+<p><span class="math inline">\(~\)</span></p>
+<p>The dataset used here is provided via <a
+href="https://gisumd.github.io/COVID-19-API-Documentation/">The
+University of Maryland Social Data Science Center Global COVID-19 Trends
+and Impact Survey, in partnership with Facebook</a>. It contains samples
+of Facebook users agreeing to statements about the COVID-19 pandemic. We
+use the data for Finland, and have opted for the data not weighted (by
+Facebook) to match the population. The differences between weighted and
+unweighted datasets are not large (especially as smoothing is applied),
+but the weights might induce distortions: For example, a German person
+with a moderate sampling weigh in the German context but a high one in
+the Finnish context, can be reported as currently residing in Finland.
+Facebook does not have access to survey data, and University of Maryland
+does not have access to Facebook data; hence, the person would result in
+the Finnish dataset, but with their German sampling weight.</p>
+<p>Relevant articles detailing the data collection methodology and
+weighting procedures:</p>
+<p>Astley, C. M., Tuli, G., Mc Cord, K. A., Cohn, E. L., Rader, B.,
+Varrelman, T. J., Chiu, S. L., Deng, X., Stewart, K., Farag, T. H.,
+Barkume, K. M., LaRocca, S., Morris, K. A., Kreuter, F., &amp;
+Brownstein, J. S. (2021). Global monitoring of the impact of the
+COVID-19 pandemic through online surveys sampled from the Facebook user
+base. Proceedings of the National Academy of Sciences, 118(51),
+e2111455118. <a href="https://doi.org/10.1073/pnas.2111455118"
+class="uri">https://doi.org/10.1073/pnas.2111455118</a></p>
+<p>Barkay, N., Cobb, C., Eilat, R., Galili, T., Haimovich, D., LaRocca,
+S., Morris, K., &amp; Sarig, T. (2020). Weights and Methodology Brief
+for the COVID-19 Symptom Survey by University of Maryland and Carnegie
+Mellon University, in Partnership with Facebook. ArXiv:2009.14675 [Cs].
+<a href="http://arxiv.org/abs/2009.14675"
+class="uri">http://arxiv.org/abs/2009.14675</a></p>
+<p>Fan, J., Li, Y., Stewart, K., Kommareddy, A. R., Garcia, A., O’Brien,
+J., Bradford, A., Deng, X., Chiu, S., Kreuter, F., Barkay, N., Bilinski,
+A., Kim, B., Galili, T., Haimovich, D., LaRocca, S., Presser, S.,
+Morris, K., Salomon, J. A., … Vannette, D. (2020). The University of
+Maryland Social Data Science Center Global COVID-19 Trends and Impact
+Survey, in partnership with Facebook. The Global COVID-19 Trends and
+Impact Survey Open Data API. <a href="https://covidmap.umd.edu/api.html"
+class="uri">https://covidmap.umd.edu/api.html</a></p>
+<p>In the following code chunk, we download and preprocess the data
+using R.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">echo =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">warning =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">message =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">error =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">cache =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">collapse =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                      <span class="at">eval =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>                      <span class="at">dpi =</span> <span class="dv">300</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># devtools::install_github(&quot;fredhasselman/casnet&quot;)</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Download comprehensive datasets from CTIS API:</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># source(&quot;data_preparation.R&quot;)</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>country_in_question <span class="ot">&lt;-</span> <span class="st">&quot;Finland&quot;</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>region_in_question <span class="ot">&lt;-</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>df_masks_allwaves <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">&quot;./data/&quot;</span>,</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>                country_in_question, region_in_question, </span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;_CTIS_unweighted_allwaves&quot;</span>,</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;.csv&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(date, percent_mc_unw)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>df_orig <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">&quot;./data/&quot;</span>,</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>                country_in_question, region_in_question, </span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;_CTIS_unweighted&quot;</span>,</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;.csv&quot;</span>))</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>figure_identifier <span class="ot">&lt;-</span> <span class="fu">paste0</span>(country_in_question)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="fu">paste0</span>(<span class="st">&quot;attractor-viz/&quot;</span>))</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="fu">paste0</span>(<span class="st">&quot;attractor-viz/&quot;</span>, figure_identifier, <span class="st">&quot;/&quot;</span>))</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="co"># head(df_orig %&gt;% dplyr::select(date, everything()))</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="co"># purrr::map(.x = df_analysis,</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="co">#            .f = ~sum(is.na(.x)))</span></span></code></pre></div>
+</div>
+<div id="data-preparation" class="section level1">
+<h1>Data preparation</h1>
+<p><span class="math inline">\(~\)</span></p>
+<p>From the original dataset, we choose eight variables of protective
+behaviours featuring no missing values. These variables consist of:</p>
+<ul>
+<li>% of respondents who wore a mask all the time or most of the time
+when in public.</li>
+<li>% of respondents who report intentionally avoiding contact with
+other people all the time or most of the time.</li>
+</ul>
+<p>… As well as six activities performed during the last 24 hours:</p>
+<ul>
+<li>% of respondents who worked outside their home in the past 24
+hours.</li>
+<li>% of respondents who spent time with someone who hasn’t stayed with
+them in the past 24 hours.</li>
+<li>% of respondents who went to a market, grocery store, or pharmacy in
+the past 24 hours.</li>
+<li>% of respondents who went to a bar, restaurant, or cafe in the past
+24 hours.</li>
+<li>% of respondents who used public transport in the past 24
+hours.</li>
+<li>% of respondents who attended an event with more than 10 people in
+the past 24 hours.</li>
+</ul>
+<p>The variables concerning the aforementioned six activities are
+reverse-coded, hence a larger value of each variable indicates a lower
+risk of transmission.</p>
+<p>Each variable is normalised to unit scale by dividing the original
+values by the maximum value of that variable. This results in a score,
+which indicates variability in relation to the magnitude of the
+variable, avoiding the “stretching effect” which happens if one rescales
+to [0, 1] (i.e. a variable which is mostly constant can end up depicting
+huge fluctuations if forced to extend within a relatively large
+range).</p>
+<p>In the current analysis, we are not concerned with intra-week
+fluctuations; hence, we apply a smoothing filter: Each variable is
+processed with a rolling 7-day average.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df_analysis <span class="ot">&lt;-</span> df_orig <span class="sc">%&gt;%</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Choose variables with protective behaviours and no missings</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(date, <span class="fu">matches</span>(<span class="fu">c</span>(<span class="st">&quot;activity&quot;</span>, </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                                <span class="st">&quot;percent_mc&quot;</span>, </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                                <span class="st">&quot;pct_avoid_contact&quot;</span>))) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Reverse code variables such as more means riskier behaviours</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="fu">across</span>(</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">contains</span>(<span class="st">&quot;activity&quot;</span>),</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span> <span class="dv">1</span> <span class="sc">-</span> .))</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># # Check that there are no missing values:</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># df_analysis %&gt;% </span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#   purrr::map(.x = ., .f = ~ sum(is.na(.x)))</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Rescale and smooth (7-day mean) data</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>df_analysis_rescaled <span class="ot">&lt;-</span> df_analysis <span class="sc">%&gt;%</span> </span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric),</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>                       <span class="sc">~</span>.<span class="sc">/</span><span class="fu">max</span>(.)))</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>df_analysis_rescaled_smoothed <span class="ot">&lt;-</span> df_analysis_rescaled <span class="sc">%&gt;%</span> </span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric),</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>                       <span class="sc">~</span>slider<span class="sc">::</span><span class="fu">slide_dbl</span>(</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>                         <span class="at">.x =</span> ., </span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>                         <span class="at">.f =</span> <span class="sc">~</span><span class="fu">mean</span>(.x),</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>                         <span class="at">.before =</span> <span class="dv">6</span>, </span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>                         <span class="at">.after =</span> <span class="dv">0</span>, </span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>                         <span class="at">.complete =</span> <span class="cn">FALSE</span>)))</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># ~scales::rescale(., to = c(0, 1))))</span></span></code></pre></div>
+<div id="visual-inspection-of-dataset" class="section level2">
+<h2>Visual inspection of dataset</h2>
+<p><span class="math inline">\(~\)</span></p>
+<p>Next, we inspect the time series to verify that recoding and other
+preparation steps worked as intended.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df_analysis <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span>date) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> date,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> value,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">colour =</span> name)) <span class="sc">+</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_viridis_d</span>(<span class="at">option =</span> <span class="st">&quot;viridis&quot;</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                         <span class="at">end =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(<span class="at">date_labels =</span> <span class="st">&quot;%Y-%m&quot;</span>) <span class="sc">+</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Date&quot;</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;% reporting activity&quot;</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">&quot;Unsmoothed reverse-coded data&quot;</span>) <span class="sc">+</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="sc">+</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>name)</span></code></pre></div>
+<p><img src="attractor_analysis_and_figures_files/figure-html/unnamed-chunk-31-1.png" width="2100" /></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>df_analysis_rescaled <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span>date) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> date,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> value,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">colour =</span> name)) <span class="sc">+</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_viridis_d</span>(<span class="at">option =</span> <span class="st">&quot;viridis&quot;</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                         <span class="at">end =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(<span class="at">date_labels =</span> <span class="st">&quot;%Y-%m&quot;</span>) <span class="sc">+</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Date&quot;</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;% reporting activity&quot;</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">&quot;Reverse-coded data divided by variable&#39;s maximum&quot;</span>) <span class="sc">+</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="sc">+</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>name)</span></code></pre></div>
+<p><img src="attractor_analysis_and_figures_files/figure-html/unnamed-chunk-31-2.png" width="2100" /></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>df_analysis_rescaled_smoothed <span class="sc">%&gt;%</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span>date) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> date,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> value,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">colour =</span> name)) <span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_viridis_d</span>(<span class="at">option =</span> <span class="st">&quot;viridis&quot;</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                         <span class="at">end =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(<span class="at">date_labels =</span> <span class="st">&quot;%Y-%m&quot;</span>) <span class="sc">+</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Date&quot;</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;% reporting activity&quot;</span>,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">&quot;Smoothed reverse-coded data divided by variable&#39;s maximum&quot;</span>) <span class="sc">+</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="sc">+</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>name)</span></code></pre></div>
+<p><img src="attractor_analysis_and_figures_files/figure-html/unnamed-chunk-31-3.png" width="2100" /></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="do">### If you want to display a simple mean of the variables</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># df_analysis %&gt;% </span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   dplyr::mutate(mean_of_original_rev_values = rowMeans(select(., -date), </span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#                                                        na.rm = TRUE)) %&gt;% </span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   ggplot(aes(x = date,</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#              y = mean_of_original_rev_values)) +</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_line() +</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point() +</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_colour_viridis_d(option = &quot;viridis&quot;,</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#                          end = 0.8) +</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_x_date(date_labels = &quot;%Y-%m&quot;) +</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x = &quot;Date&quot;,</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#        y = &quot;% reporting activity&quot;,</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#        title = &quot;Simple mean of variables included in analysis&quot;) +</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_bw() +</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme(legend.position = &quot;none&quot;)</span></span></code></pre></div>
+</div>
+<div id="figure-1-of-the-manuscript" class="section level2">
+<h2>Figure 1 of the manuscript</h2>
+<p>Code below creates the first figure of the manuscript, depicting
+nonlinear change.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>masks_for_figure <span class="ot">&lt;-</span> df_masks_allwaves <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">percent_mc_unw =</span> percent_mc_unw <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> date, </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> percent_mc_unw)) <span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">colour =</span> viridis<span class="sc">::</span><span class="fu">viridis</span>(<span class="at">n =</span> <span class="dv">3</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)[<span class="dv">2</span>]) <span class="sc">+</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(<span class="at">date_labels =</span> <span class="st">&quot;%Y-%m&quot;</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">breaks =</span> <span class="st">&quot;2 months&quot;</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>               <span class="co"># expand = c(0, 0)</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>               ) <span class="sc">+</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>)) <span class="sc">+</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="cn">NULL</span>,</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># &quot;: Phase types across resolutions and time&quot;),</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># caption = &quot;Higher values of vertical slices indicate less \&quot;resolution\&quot;. Lighter colours indicate better quality. </span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Horizontal slices indicate temporal evolution of phases at that resolution.&quot;,</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;% self-reported mask-wearing&quot;</span>) <span class="sc">+</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">22</span>) <span class="sc">+</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">30</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>masks_for_figure</span></code></pre></div>
+<p><img src="attractor_analysis_and_figures_files/figure-html/unnamed-chunk-32-1.png" width="2100" /></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">plot =</span> masks_for_figure,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">filename =</span> <span class="fu">paste0</span>(<span class="st">&quot;attractor-viz/&quot;</span>, figure_identifier,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;/&quot;</span>, figure_identifier, </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;_masks_allwaves&quot;</span>, <span class="st">&quot;.png&quot;</span>), </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">height =</span> <span class="dv">8</span>, <span class="at">width =</span> <span class="dv">16</span>)</span></code></pre></div>
+</div>
+</div>
+<div id="perform-analysis" class="section level1">
+<h1>Perform analysis</h1>
+<p><span class="math inline">\(~\)</span></p>
+<p>Next, we perform the Cumulative Recurrence Network (or
+Multidimensional Recurrence Quantification) analysis. The method is
+described in detail in the references below, but we outline the main
+points here. A step-by-step explanation of analysis with a single radius
+value is presented in the <a
+href="https://heinonmatti.github.io/complexity-behchange/Recurrence-plots.html">supplementary
+website of Heino et al. 2021</a>.</p>
+<p>Recall that our data consisted of eight time series. To generate a
+cumulative recurrence network, these time series are considered to trace
+a path in an 8-dimensional space, where each value is a coordinate. The
+gist of recurrence-based analyses is quantifying how the system
+(approximately) returns to a set of coordinates visited previously. We
+assume that these frequented areas (“phases”) correspond to attractors
+of the system. Note that, here, the term “phase” is used to signify an
+area (valley) in the attractor landscape, and “state” is used to signify
+the position of the ball in a low-dimensional visualisation of the
+landscape. When each coordinate value is plotted against every other
+value (see Figure 2 of Hasselman, 2022), a Euclidean distance can be
+derived to indicate similarity between the two 8-dimensional coordinates
+(that is, two sets of 8-variable measures; distance between coordinates
+at e.g. time 1 and time 3).</p>
+<p>The common practice is to choose a value for the radius parameter,
+which defines a similarity threshold between two points in the
+8-dimensional space; distance values above this threshold are considered
+distant (non-recurring), and those below it are considered close
+(recurring). As there are no satisfactory rules for choosing the radius
+parameter in our case, we run the analysis on 40 different radii.</p>
+<p>For each analysis, the recurrence matrix is considered an adjacency
+matrix of a complex network (i.e. recurrences are the edges, and time
+points are the nodes). The edges are weighted by their similarity under
+the threshold value, so that more similar time points are connected by a
+stronger edge. We set the upper triangle of the adjacency matrix to
+zero, in order to not use information from the future to determine
+whether two nodes are connected, leading to a directed recurrence
+network. This also allows for the method to be used in real time
+monitoring of a system, without resorting to a sliding window analysis –
+thus avoiding accompanying considerations of window size.</p>
+<p>In the last stage of analysis, for each radius value inspected,
+phases (regions of attraction) are extracted from the recurrence
+network. The procedure of the algorithm is as follows:</p>
+<ol style="list-style-type: decimal">
+<li><p>Identify the node with the highest strength (i.e. the sum of
+weights of edges times the number of edges) attached to the
+node.</p></li>
+<li><p>Identify which nodes connect to this high-strength node, and mark
+these as belonging to the same phase (area of attraction in the phase
+space).</p></li>
+<li><p>Pick a node with the next highest strength, which <em>does
+not</em> connect to the highest strength node identified previously.
+Then go to #2 until there are no more unassigned nodes left.</p></li>
+<li><p>Assign the remaining nodes (which connect to nodes assigned to
+phases in #2, but are not connected to the highest strength node
+identified in #1), the strongest phase to which they are
+connected.</p></li>
+</ol>
+<p>As we perform the analysis for 40 different radius values, we plot
+the phases derived from each radius as horizontal slices, where each
+point on the x-axis refers to the corresponding date for the node in
+question. We assign each phase a colour by taking the mean of all
+variables at the dates belonging to the same phase. This process is
+repeated with each new radius parameter, and in the end, the these means
+are discretized by transforming the variable into an ordered factor. As
+a result, the height of coloured structures in the plot correspond to
+many radius values agreeing that there is a transition happening at the
+edges of the structure. The reason for performing this colouring process
+is merely to create an intuitive visualisation of a very large dataset;
+it works in this case as the mean is a decent indicator of phase
+contents, but can fail in other cases.</p>
+<p>In general, recurrence networks allow us to describe both linear and
+nonlinear dynamics across all available time scales. Later, we show how,
+in this case, there is decent correspondence to a more familiar way of
+inferring movements between attractors from principal component
+analysis.</p>
+<p><span class="math inline">\(~\)</span></p>
+<p><strong>References and further reading:</strong></p>
+<p>Hasselman, F. (2022). Early Warning Signals in Phase Space: Geometric
+Resilience Loss Indicators From Multiplex Cumulative Recurrence
+Networks. Frontiers in Physiology, 13, 859127. <a
+href="https://doi.org/10.3389/fphys.2022.859127"
+class="uri">https://doi.org/10.3389/fphys.2022.859127</a></p>
+<p>Hasselman, F., &amp; Bosman, A. M. T. (2020). Studying Complex
+Adaptive Systems with Internal States: A Recurrence Network Approach to
+the Analysis of Multivariate Time Series Data Representing Self-Reports
+of Human Experience. Frontiers in Applied Mathematics and Statistics, 6.
+<a href="https://doi.org/10/ggs9tg"
+class="uri">https://doi.org/10/ggs9tg</a></p>
+<p>Marwan, N. (2011). How to avoid potential pitfalls in recurrence plot
+based data analysis. International Journal of Bifurcation and Chaos,
+21(04), 1003–1017. <a href="https://doi.org/10/bk2dt9"
+class="uri">https://doi.org/10/bk2dt9</a></p>
+<p>Marwan, N., Romano, M. C., Thiel, M., &amp; Kurths, J. (2007).
+Recurrence plots for the analysis of complex systems. Physics Reports,
+438(5), 237–329. <a href="https://doi.org/10/fbbwkj"
+class="uri">https://doi.org/10/fbbwkj</a></p>
+<p>Wallot, S., &amp; Leonardi, G. (2018). Analyzing Multivariate
+Dynamics Using Cross-Recurrence Quantification Analysis (CRQA),
+Diagonal-Cross-Recurrence Profiles (DCRP), and Multidimensional
+Recurrence Quantification Analysis (MdRQA) – A Tutorial in R. Frontiers
+in Psychology, 9. <a href="https://doi.org/10/gfrzvw"
+class="uri">https://doi.org/10/gfrzvw</a></p>
+<p>Zou, Y., Donner, R. V., Marwan, N., Donges, J. F., &amp; Kurths, J.
+(2019). Complex network approaches to nonlinear time series analysis.
+Physics Reports, 787, 1–97. <a href="https://doi.org/10/gf3ckk"
+class="uri">https://doi.org/10/gf3ckk</a></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df_analysis_rescaled_smoothed_dates <span class="ot">&lt;-</span> df_analysis_rescaled_smoothed <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(date) </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>df_analysis_rescaled_smoothed_nodate <span class="ot">&lt;-</span> df_analysis_rescaled_smoothed <span class="sc">%&gt;%</span> </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>date) </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Fire up all cores</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>all_cores <span class="ot">&lt;-</span> parallel<span class="sc">::</span><span class="fu">detectCores</span>(<span class="at">logical =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>cl <span class="ot">&lt;-</span> parallel<span class="sc">::</span><span class="fu">makePSOCKcluster</span>(all_cores)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>doParallel<span class="sc">::</span><span class="fu">registerDoParallel</span>(cl) </span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>start_time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Placeholders for values to come</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>rn_list <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>phase_df_list <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Range of radius parameters to explore</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>radius_values <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fl">0.01</span>, <span class="at">to =</span> <span class="fl">0.40</span>, <span class="at">length.out =</span> <span class="dv">40</span>) </span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Run analysis on each of the aforementioned radius parameter values</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: An error in casnet::rn_phases() is usually caused by setting </span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co"># the &quot;from = &quot; value above too low.</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(radius_values)){</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>  rn_list[[i]] <span class="ot">&lt;-</span> casnet<span class="sc">::</span><span class="fu">rn</span>(<span class="at">y1 =</span> df_analysis_rescaled_smoothed_nodate,</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>                             <span class="at">doEmbed =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>                             <span class="at">weighted =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>                             <span class="at">weightedBy =</span> <span class="st">&quot;si&quot;</span>,</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>                             <span class="at">directed =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>                             <span class="at">doPlot =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>                             <span class="co"># returnGraph = TRUE,</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>                             <span class="at">emRad =</span> radius_values[i],</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>                             <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>  phase_df_list[[i]] <span class="ot">&lt;-</span> casnet<span class="sc">::</span><span class="fu">rn_phases</span>(<span class="at">RN =</span> rn_list[[i]],</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">standardise =</span> <span class="st">&quot;unit&quot;</span>,</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">maxPhases =</span> <span class="dv">1000</span>,</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">minStatesinPhase =</span> <span class="dv">1</span>,</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">returnGraph =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">doPhaseProfilePlot =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">doSpiralPlot =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">returnCentroid =</span> <span class="st">&quot;median.mad&quot;</span>,</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">cleanUp =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">excludeNorec =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">excludeOther =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>  <span class="co"># print(paste0(&quot;Completed &quot;, i, &quot; out of &quot;, </span></span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>  <span class="co">#              length(radius_values), &quot; in &quot;,</span></span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>  <span class="co">#              round(Sys.time() - start_time, digits = 2),</span></span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>  <span class="co">#              &quot; since &quot;, start_time))</span></span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a><span class="do">### This does not work in the current version:</span></span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a><span class="co"># casnet::rp_measures(rn_list[[i]], silent = FALSE, emRad = radius_values[[i]])</span></span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a><span class="co"># For phase colours in the plot, we use means of original (non-rescaled) values</span></span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a>dates_and_means_for_colours <span class="ot">&lt;-</span> df_analysis_rescaled_smoothed <span class="sc">%&gt;%</span> </span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">mean_of_original_rev_values =</span> <span class="fu">rowMeans</span>(<span class="fu">select</span>(., <span class="sc">-</span>date), </span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a>                                                       <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a><span class="co"># Take each dataframe of phase analysis (corresponding to analysis of a single</span></span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a><span class="co"># radius parameter value), add colours per phase</span></span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>data_for_megaviz <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map2</span>(</span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a>  <span class="at">.x =</span> phase_df_list,</span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a>  <span class="at">.y =</span> radius_values,</span>
+<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a>  <span class="at">.f =</span> <span class="sc">~</span>dplyr<span class="sc">::</span><span class="fu">bind_cols</span>(.x<span class="sc">$</span>phaseSeries, </span>
+<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a>                         dates_and_means_for_colours) <span class="sc">%&gt;%</span></span>
+<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">radius_values =</span> .y <span class="co">#%&gt;% round(., digits = 5)</span></span>
+<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a>                  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">group_by</span>(phase_name) <span class="sc">%&gt;%</span></span>
+<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">phase_colour_stringency =</span> </span>
+<span id="cb9-70"><a href="#cb9-70" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">mean</span>(mean_of_original_rev_values)) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-71"><a href="#cb9-71" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">ungroup</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-72"><a href="#cb9-72" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">reduce</span>(<span class="at">.x =</span> .,</span>
+<span id="cb9-73"><a href="#cb9-73" aria-hidden="true" tabindex="-1"></a>                <span class="at">.f =</span> dplyr<span class="sc">::</span>bind_rows)</span>
+<span id="cb9-74"><a href="#cb9-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-75"><a href="#cb9-75" aria-hidden="true" tabindex="-1"></a><span class="co"># Needed to define width of horizontal colour stripes</span></span>
+<span id="cb9-76"><a href="#cb9-76" aria-hidden="true" tabindex="-1"></a>radius_step_size <span class="ot">&lt;-</span> <span class="fu">diff</span>(radius_values) <span class="sc">%&gt;%</span> <span class="fu">mean</span>(.)</span>
+<span id="cb9-77"><a href="#cb9-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-78"><a href="#cb9-78" aria-hidden="true" tabindex="-1"></a>data_for_megaviz_processed <span class="ot">&lt;-</span> data_for_megaviz <span class="sc">%&gt;%</span></span>
+<span id="cb9-79"><a href="#cb9-79" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">date_end =</span> <span class="fu">lag</span>(date)) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-80"><a href="#cb9-80" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Discretize the colour by making it an ordered factor based on mean </span></span>
+<span id="cb9-81"><a href="#cb9-81" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">phase_colour_indicator =</span> forcats<span class="sc">::</span><span class="fu">fct_reorder</span>(</span>
+<span id="cb9-82"><a href="#cb9-82" aria-hidden="true" tabindex="-1"></a>    <span class="at">.f =</span> <span class="fu">factor</span>(phase_colour_stringency),</span>
+<span id="cb9-83"><a href="#cb9-83" aria-hidden="true" tabindex="-1"></a>    <span class="at">.x =</span> phase_colour_stringency,</span>
+<span id="cb9-84"><a href="#cb9-84" aria-hidden="true" tabindex="-1"></a>    <span class="at">.fun =</span> mean))</span>
+<span id="cb9-85"><a href="#cb9-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-86"><a href="#cb9-86" aria-hidden="true" tabindex="-1"></a>megaviz_plot <span class="ot">&lt;-</span> data_for_megaviz_processed <span class="sc">%&gt;%</span> </span>
+<span id="cb9-87"><a href="#cb9-87" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(., <span class="fu">aes</span>(<span class="at">x =</span> date,</span>
+<span id="cb9-88"><a href="#cb9-88" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> radius_values)) <span class="sc">+</span></span>
+<span id="cb9-89"><a href="#cb9-89" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_rect</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> date, <span class="at">xmax =</span> date_end,</span>
+<span id="cb9-90"><a href="#cb9-90" aria-hidden="true" tabindex="-1"></a>                <span class="at">ymin =</span> radius_values, <span class="at">ymax =</span> radius_values <span class="sc">+</span> </span>
+<span id="cb9-91"><a href="#cb9-91" aria-hidden="true" tabindex="-1"></a>                  radius_step_size,<span class="co"># + radius_step_size / 10,</span></span>
+<span id="cb9-92"><a href="#cb9-92" aria-hidden="true" tabindex="-1"></a>                <span class="at">fill =</span> phase_colour_indicator)) <span class="sc">+</span></span>
+<span id="cb9-93"><a href="#cb9-93" aria-hidden="true" tabindex="-1"></a>  <span class="do">##### If horizontal lines indicating radius are needed:</span></span>
+<span id="cb9-94"><a href="#cb9-94" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_hline(yintercept = seq(from = 0, to = max(radius_values), by = 0.1),</span></span>
+<span id="cb9-95"><a href="#cb9-95" aria-hidden="true" tabindex="-1"></a>  <span class="co">#            alpha = 0.05,</span></span>
+<span id="cb9-96"><a href="#cb9-96" aria-hidden="true" tabindex="-1"></a>  <span class="co">#  # See https://github.com/tidyverse/ggplot2/issues/3359 for the why of this:</span></span>
+<span id="cb9-97"><a href="#cb9-97" aria-hidden="true" tabindex="-1"></a>  <span class="co">#            data = data.frame()) +</span></span>
+<span id="cb9-98"><a href="#cb9-98" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fl">0.17</span>,</span>
+<span id="cb9-99"><a href="#cb9-99" aria-hidden="true" tabindex="-1"></a>               <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>,</span>
+<span id="cb9-100"><a href="#cb9-100" aria-hidden="true" tabindex="-1"></a>               <span class="at">alpha =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb9-101"><a href="#cb9-101" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">option =</span> <span class="st">&quot;inferno&quot;</span>,</span>
+<span id="cb9-102"><a href="#cb9-102" aria-hidden="true" tabindex="-1"></a>                       <span class="at">begin =</span> <span class="fl">0.1</span>,</span>
+<span id="cb9-103"><a href="#cb9-103" aria-hidden="true" tabindex="-1"></a>                       <span class="at">end =</span> <span class="dv">1</span>,</span>
+<span id="cb9-104"><a href="#cb9-104" aria-hidden="true" tabindex="-1"></a>                       <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb9-105"><a href="#cb9-105" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(<span class="at">date_labels =</span> <span class="st">&quot;%Y-%m&quot;</span>,</span>
+<span id="cb9-106"><a href="#cb9-106" aria-hidden="true" tabindex="-1"></a>               <span class="at">breaks =</span> <span class="st">&quot;1 month&quot;</span>,</span>
+<span id="cb9-107"><a href="#cb9-107" aria-hidden="true" tabindex="-1"></a>               <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb9-108"><a href="#cb9-108" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb9-109"><a href="#cb9-109" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="fu">min</span>(radius_values), <span class="fu">max</span>(radius_values))) <span class="sc">+</span></span>
+<span id="cb9-110"><a href="#cb9-110" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">fill =</span> <span class="st">&quot;none&quot;</span>) <span class="sc">+</span></span>
+<span id="cb9-111"><a href="#cb9-111" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb9-112"><a href="#cb9-112" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;A)&quot;</span>,</span>
+<span id="cb9-113"><a href="#cb9-113" aria-hidden="true" tabindex="-1"></a>    <span class="co"># &quot;: Phase types across resolutions and time&quot;),</span></span>
+<span id="cb9-114"><a href="#cb9-114" aria-hidden="true" tabindex="-1"></a>    <span class="co"># caption = &quot;Higher values of vertical slices indicate less \&quot;resolution\&quot;. Lighter colours indicate better quality. </span></span>
+<span id="cb9-115"><a href="#cb9-115" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Horizontal slices indicate temporal evolution of phases at that resolution.&quot;,</span></span>
+<span id="cb9-116"><a href="#cb9-116" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb9-117"><a href="#cb9-117" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Radius&quot;</span>) <span class="sc">+</span></span>
+<span id="cb9-118"><a href="#cb9-118" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">22</span>) <span class="sc">+</span></span>
+<span id="cb9-119"><a href="#cb9-119" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">30</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span>
+<span id="cb9-120"><a href="#cb9-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-121"><a href="#cb9-121" aria-hidden="true" tabindex="-1"></a>megaviz_plot</span></code></pre></div>
+<p><img src="attractor_analysis_and_figures_files/figure-html/unnamed-chunk-33-1.png" width="2100" /></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">plot =</span> megaviz_plot,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">filename =</span> <span class="fu">paste0</span>(<span class="st">&quot;attractor-viz/&quot;</span>, figure_identifier,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;/&quot;</span>, figure_identifier, </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;_megaviz_plot&quot;</span>, <span class="st">&quot;.png&quot;</span>), </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">height =</span> <span class="dv">8</span>, <span class="at">width =</span> <span class="dv">16</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>position_of_last_meaningful_radius <span class="ot">&lt;-</span> data_for_megaviz_processed <span class="sc">%&gt;%</span> </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(radius_values) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">num_of_phases =</span> <span class="fu">length</span>(<span class="fu">unique</span>(phase_number))) <span class="sc">%&gt;%</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">rownum =</span> dplyr<span class="sc">::</span><span class="fu">row_number</span>(),</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Is there a change to the previous value?</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">absdiff =</span> <span class="fu">abs</span>(num_of_phases <span class="sc">-</span> <span class="fu">lag</span>(num_of_phases)),</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">cumsum_absdiff =</span> <span class="fu">cumsum</span>(tidyr<span class="sc">::</span><span class="fu">replace_na</span>(absdiff, <span class="dv">0</span>))) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># When cumsum_absdiff is at its maximum, there are no more changes</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(cumsum_absdiff <span class="sc">==</span> <span class="fu">max</span>(cumsum_absdiff)) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Pull the row number after the last meaningful change</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(rownum <span class="sc">==</span> <span class="fu">min</span>(rownum) <span class="sc">+</span> <span class="dv">1</span> <span class="sc">&amp;</span> num_of_phases <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">pull</span>(rownum)</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">length</span>(position_of_last_meaningful_radius) <span class="sc">==</span> <span class="dv">0</span>){</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="fu">paste0</span>(<span class="st">&quot;Please increase the maximum radius above &quot;</span>, <span class="fu">max</span>(radius_values)))</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>} </span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>last_meaningful_radius <span class="ot">&lt;-</span> </span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>  radius_values[position_of_last_meaningful_radius]</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>date_of_peak_radius <span class="ot">&lt;-</span> data_for_megaviz_processed <span class="sc">%&gt;%</span> </span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(radius_values <span class="sc">==</span> </span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>                  <span class="co"># Extract the position of peak radius </span></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>                  last_meaningful_radius</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>                ) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">phasechange =</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>    phase_name <span class="sc">!=</span> <span class="fu">lag</span>(phase_name) <span class="sc">~</span> <span class="st">&quot;1&quot;</span>,</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">&quot;0&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(phasechange <span class="sc">==</span> <span class="st">&quot;1&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">pull</span>(date)</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a><span class="do">### For a zoomed-in plot:</span></span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a><span class="co"># megaviz_plot +</span></span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a><span class="co">#   coord_cartesian(ylim = c(min(radius_values), last_meaningful_radius))</span></span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a><span class="co"># ggsave(filename = paste0(&quot;attractor-viz/&quot;, figure_identifier,</span></span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a><span class="co">#                          &quot;/&quot;, figure_identifier, </span></span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a><span class="co">#                          &quot;_megaviz_plot_zoomed&quot;, &quot;.png&quot;),</span></span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a><span class="co">#        height = 7, width = 10)</span></span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>end_time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>end_time <span class="sc">-</span> start_time</span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a><span class="do">## Time difference of 13.98741 mins</span></span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>parallel<span class="sc">::</span><span class="fu">stopCluster</span>(cl)</span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a>foreach<span class="sc">::</span><span class="fu">registerDoSEQ</span>()</span></code></pre></div>
+</div>
+<div id="phase-contents-at-chosen-radius" class="section level1">
+<h1>Phase contents at chosen radius</h1>
+<p><span class="math inline">\(~\)</span></p>
+<p>Next, we plot the contents of one representative radius parameter. As
+this is a pedagogical demonstration, for clarity we omit one 6-day phase
+which very much resembles that of the one starting in the end of
+December.</p>
+<p>We use the package <code>ggridges</code> due to its flexibility and
+ease; the rationale and an accessible introduction to interpreting these
+types of plots can be found in this reference:</p>
+<p>Allen, M., Poggiali, D., Whitaker, K., Marshall, T. R., &amp; Kievit,
+R. A. (2019). Raincloud plots: A multi-platform tool for robust data
+visualization. Wellcome Open Research, 4, 63. <a
+href="https://doi.org/10/gfxr7w"
+class="uri">https://doi.org/10/gfxr7w</a></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pick a radius to demonstrate the contents</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>phases_viz_wide <span class="ot">&lt;-</span> data_for_megaviz_processed <span class="sc">%&gt;%</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(radius_values <span class="sc">==</span> <span class="fl">0.17</span>) </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="do">### Collect dates of the small phase (6 occurrences), to omit from the pedagogical demo</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>dates_to_omit <span class="ot">&lt;-</span> data_for_megaviz_processed <span class="sc">%&gt;%</span> </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(radius_values <span class="sc">==</span> <span class="fl">0.17</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(phase_name <span class="sc">==</span> <span class="st">&quot;Phase 5&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">pull</span>(date)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>total_number_of_phases <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(phases_viz_wide<span class="sc">$</span>phase_name))</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>phases_viz_long <span class="ot">&lt;-</span> phases_viz_wide <span class="sc">%&gt;%</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(date, phase_colour_indicator) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">bind_cols</span>(., </span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>                   df_analysis_rescaled_smoothed <span class="sc">%&gt;%</span> </span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>                     dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="fu">contains</span>(<span class="st">&quot;_unw&quot;</span>))) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">contains</span>(<span class="st">&quot;_unw&quot;</span>),</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>                      <span class="at">names_to =</span> <span class="st">&quot;Dimension&quot;</span>,</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>                      <span class="at">values_to =</span> <span class="st">&quot;Value&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Dimension =</span> stringr<span class="sc">::</span><span class="fu">str_replace</span>(<span class="at">string =</span> Dimension,</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">pattern =</span> <span class="st">&quot;dim_&quot;</span>,</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">replacement =</span> <span class="st">&quot;&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">Dimension =</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    Dimension <span class="sc">==</span> <span class="st">&quot;percent_mc_unw&quot;</span> <span class="sc">~</span> <span class="st">&quot;Wore a mask&quot;</span>,</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    Dimension <span class="sc">==</span> <span class="st">&quot;pct_activity_work_outside_home_unw&quot;</span> <span class="sc">~</span> <span class="st">&quot;Worked from home&quot;</span>,</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    Dimension <span class="sc">==</span> <span class="st">&quot;pct_activity_shop_unw&quot;</span> <span class="sc">~</span> <span class="st">&quot;Did not visit shop&quot;</span>,</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    Dimension <span class="sc">==</span> <span class="st">&quot;pct_activity_restaurant_bar_unw&quot;</span> <span class="sc">~</span> <span class="st">&quot;Did not visit bar/restaurant&quot;</span>,</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>    Dimension <span class="sc">==</span> <span class="st">&quot;pct_activity_spent_time_unw&quot;</span> <span class="sc">~</span> <span class="st">&quot;Only met householders&quot;</span>,</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>    Dimension <span class="sc">==</span> <span class="st">&quot;pct_activity_large_event_unw&quot;</span> <span class="sc">~</span> <span class="st">&quot;Did not attend large events&quot;</span>,</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>    Dimension <span class="sc">==</span> <span class="st">&quot;pct_activity_public_transit_unw&quot;</span> <span class="sc">~</span> <span class="st">&quot;Did not use public transit&quot;</span>,</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>    Dimension <span class="sc">==</span> <span class="st">&quot;pct_avoid_contact_unw&quot;</span> <span class="sc">~</span> <span class="st">&quot;Intentionally avoided contacts&quot;</span>,</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>    )) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span>(date <span class="sc">%in%</span> dates_to_omit))</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>raincloud_phases_plot <span class="ot">&lt;-</span> phases_viz_long <span class="sc">%&gt;%</span> </span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">fill =</span> phase_colour_indicator,</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>             <span class="at">x =</span> Value,</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> Dimension)) <span class="sc">+</span></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>  ggridges<span class="sc">::</span><span class="fu">geom_density_ridges</span>(</span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">point_colour =</span> phase_colour_indicator),</span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">jittered_points =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> <span class="st">&quot;raincloud&quot;</span>,</span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">scale =</span> <span class="fl">0.9</span>,</span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.7</span>,</span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">point_alpha =</span> <span class="fl">0.9</span>,</span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">point_size =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_discrete_manual</span>(<span class="st">&quot;point_colour&quot;</span>,</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>                        <span class="at">values =</span> viridis<span class="sc">::</span><span class="fu">inferno</span>(<span class="at">n =</span> total_number_of_phases,</span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>                                                  <span class="at">begin =</span> <span class="fl">0.15</span>,</span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>                                                  <span class="at">end =</span> <span class="fl">0.9</span>,</span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>                                                  <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>                        <span class="at">name =</span> <span class="st">&quot;Phase name&quot;</span></span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>  <span class="do">### If you&#39;re not omitting phases, replace this with the commented-out bit</span></span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="st">&quot;Phase name&quot;</span>,</span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>                    <span class="at">values =</span> viridis<span class="sc">::</span><span class="fu">inferno</span>(<span class="at">n =</span> total_number_of_phases,</span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">begin =</span> <span class="fl">0.15</span>,</span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">end =</span> <span class="fl">0.9</span>,</span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">5</span>)],</span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>                    <span class="at">name =</span> <span class="st">&quot;Phase name&quot;</span></span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a>  <span class="co"># scale_fill_viridis_d(option = &quot;inferno&quot;,</span></span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                      name = &quot;Phase name&quot;,</span></span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                      begin = 0.15,</span></span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                      end = 0.9,</span></span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                      direction = -1) +</span></span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;B)&quot;</span>,</span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="cn">NULL</span>,</span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Daily values within regime&quot;</span>) <span class="sc">+</span></span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">22</span>) <span class="sc">+</span></span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a>raincloud_phases_plot</span></code></pre></div>
+<p><img src="attractor_analysis_and_figures_files/figure-html/unnamed-chunk-34-1.png" width="2100" /></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">plot =</span> raincloud_phases_plot,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">filename =</span> <span class="fu">paste0</span>(<span class="st">&quot;attractor-viz/&quot;</span>, figure_identifier, <span class="st">&quot;/&quot;</span>, </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                         figure_identifier, <span class="st">&quot;_phases_raincloud_all&quot;</span>, <span class="st">&quot;.png&quot;</span>), </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">height =</span> <span class="dv">8</span>, <span class="at">width =</span> <span class="dv">8</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># unique(phases_viz_wide$phase_size)</span></span></code></pre></div>
+</div>
+<div id="traversing-the-space-of-principal-components"
+class="section level1">
+<h1>Traversing the space of principal components</h1>
+<p><span class="math inline">\(~\)</span></p>
+<p>Another way that has been proposed to help understand movements
+within and between attractors in a multidimensional space, is the
+examination of changes in the values of principal components. To provide
+an additional pedagogical demonstration of movement in the attractor
+landscape, we perform principal component analysis with days as rows and
+variables as columns. Each day’s scores on the first two principal
+components are extracted, and plotted on a two-dimensional
+visualisation.</p>
+<p>The first day of each month is highlighted with a label, and colour
+is assigned to match the phases in the previous plot. Again, for visual
+clarity, we assign the previously described short (6-day) phase the same
+colour, as the phase that it precedes (starting in the end of 2021).</p>
+<p><span class="math inline">\(~\)</span></p>
+<p><strong>References and further reading:</strong></p>
+<p>Lever, J. J., Leemput, I. A. van de, Weinans, E., Quax, R., Dakos,
+V., Nes, E. H. van, Bascompte, J., &amp; Scheffer, M. (2020). Foreseeing
+the future of mutualistic communities beyond collapse. Ecology Letters,
+23(1), 2–15. <a href="https://doi.org/10/gjfxwm"
+class="uri">https://doi.org/10/gjfxwm</a></p>
+<p>Weinans, E., Lever, J. J., Bathiany, S., Quax, R., Bascompte, J., van
+Nes, E. H., Scheffer, M., &amp; van de Leemput, I. A. (2019). Finding
+the direction of lowest resilience in multivariate complex systems.
+Journal of The Royal Society Interface, 16(159), 20190629. <a
+href="https://doi.org/10/gjfxwn"
+class="uri">https://doi.org/10/gjfxwn</a></p>
+<p>Weinans, E., Quax, R., van Nes, E. H., &amp; Leemput, I. A. van de.
+(2021). Evaluating the performance of multivariate indicators of
+resilience loss. Scientific Reports, 11(1), 9148. <a
+href="https://doi.org/10.1038/s41598-021-87839-y"
+class="uri">https://doi.org/10.1038/s41598-021-87839-y</a></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>pcout <span class="ot">&lt;-</span> <span class="fu">princomp</span>(df_analysis_rescaled_smoothed_nodate, </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">scores =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>pc1 <span class="ot">&lt;-</span> pcout<span class="sc">$</span>scores[,<span class="dv">1</span>]</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>pc2 <span class="ot">&lt;-</span> pcout<span class="sc">$</span>scores[,<span class="dv">2</span>]</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>highlighted_dates <span class="ot">&lt;-</span> lubridate<span class="sc">::</span><span class="fu">floor_date</span>(df_analysis_rescaled_smoothed<span class="sc">$</span>date, </span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">unit =</span> <span class="st">&quot;1 month&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>()</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>pca_traverse_plot <span class="ot">&lt;-</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">bind_cols</span>(phases_viz_wide, </span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>                   <span class="at">pc1 =</span> pc1, </span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>                   <span class="at">pc2 =</span> pc2) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">first_of_month =</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>      date <span class="sc">%in%</span> highlighted_dates <span class="sc">~</span> <span class="fu">as.character</span>(date),</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.character</span>(<span class="cn">NA</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> pc1, </span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> pc2)) <span class="sc">+</span> </span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(<span class="fu">aes</span>(<span class="at">colour =</span> phase_colour_indicator),</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>                <span class="at">group =</span> <span class="st">&quot;phase_colour_stringency&quot;</span>,</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>            <span class="at">size =</span> <span class="fl">1.2</span>, </span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>            <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour =</span> phase_colour_indicator),</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="dv">3</span>,</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>             <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>  <span class="do">### If you&#39;re not omitting phases, replace this with the commented-out bit</span></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="st">&quot;Phase name&quot;</span>,</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>                    <span class="at">values =</span> <span class="fu">c</span>(viridis<span class="sc">::</span><span class="fu">inferno</span>(<span class="at">n =</span> total_number_of_phases,</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">begin =</span> <span class="fl">0.25</span>,</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">end =</span> <span class="fl">0.9</span>,</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">5</span>)],</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>                               viridis<span class="sc">::</span><span class="fu">inferno</span>(<span class="at">n =</span> total_number_of_phases,</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">begin =</span> <span class="fl">0.25</span>,</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">end =</span> <span class="fl">0.9</span>,</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)[<span class="dv">5</span>]),</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>                    <span class="at">name =</span> <span class="st">&quot;Phase name&quot;</span></span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>  <span class="co"># scale_colour_viridis_d(option = &quot;inferno&quot;,</span></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                        begin = 0.1,</span></span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                        end = 0.9,</span></span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                        direction = -1) +</span></span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ggrepel::geom_label_repel(aes(label = as.character(date)),</span></span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                           size = 2) +</span></span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>  ggrepel<span class="sc">::</span><span class="fu">geom_label_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> first_of_month),</span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>                            <span class="at">min.segment.length =</span> <span class="dv">0</span>,</span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>                           <span class="co"># nudge_x = .025,</span></span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a>                           <span class="at">nudge_y =</span> <span class="sc">-</span>.<span class="dv">025</span>,</span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a>                           <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;C)&quot;</span>,</span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;1st Principal Component&quot;</span>,</span>
+<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;2nd Principal Component&quot;</span>) <span class="sc">+</span></span>
+<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">22</span>)</span>
+<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a>pca_traverse_plot</span></code></pre></div>
+<p><img src="attractor_analysis_and_figures_files/figure-html/unnamed-chunk-35-1.png" width="2100" /></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">plot =</span> pca_traverse_plot,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">filename =</span> <span class="fu">paste0</span>(<span class="st">&quot;attractor-viz/&quot;</span>, figure_identifier, <span class="st">&quot;/&quot;</span>, </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                         figure_identifier, <span class="st">&quot;_pca_traverse&quot;</span>, <span class="st">&quot;.png&quot;</span>),</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">height =</span> <span class="dv">8</span>, <span class="at">width =</span> <span class="dv">8</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>proportions_variance_explained <span class="ot">&lt;-</span> pcout<span class="sc">$</span>sdev<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> <span class="fu">sum</span>(pcout<span class="sc">$</span>sdev<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pcout)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Importance of components:</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="do">##                           Comp.1</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Standard deviation     0.1360643</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Proportion of Variance 0.6839028</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Cumulative Proportion  0.6839028</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="do">##                            Comp.2</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Standard deviation     0.07416828</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="do">## Proportion of Variance 0.20320887</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="do">## Cumulative Proportion  0.88711166</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="do">##                            Comp.3</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="do">## Standard deviation     0.03621596</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="do">## Proportion of Variance 0.04845139</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="do">## Cumulative Proportion  0.93556305</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="do">##                            Comp.4</span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a><span class="do">## Standard deviation     0.03032936</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="do">## Proportion of Variance 0.03398073</span></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="do">## Cumulative Proportion  0.96954379</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a><span class="do">##                            Comp.5</span></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a><span class="do">## Standard deviation     0.02013987</span></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a><span class="do">## Proportion of Variance 0.01498372</span></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a><span class="do">## Cumulative Proportion  0.98452751</span></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a><span class="do">##                             Comp.6</span></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a><span class="do">## Standard deviation     0.014321976</span></span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a><span class="do">## Proportion of Variance 0.007577258</span></span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a><span class="do">## Cumulative Proportion  0.992104767</span></span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a><span class="do">##                             Comp.7</span></span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a><span class="do">## Standard deviation     0.012357487</span></span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a><span class="do">## Proportion of Variance 0.005641136</span></span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a><span class="do">## Cumulative Proportion  0.997745903</span></span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a><span class="do">##                             Comp.8</span></span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a><span class="do">## Standard deviation     0.007811478</span></span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a><span class="do">## Proportion of Variance 0.002254097</span></span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a><span class="do">## Cumulative Proportion  1.000000000</span></span></code></pre></div>
+<p>The first principal component captures 68.4 % of variance, and the
+second captures 20.3 % of variance. This leaves 11.3 % of variance
+unused in this analysis.</p>
+<p>In other instances, the amount of unaccounted-for variance could be
+much higher, implying added value for using e.g. the approach of
+cumulative recurrence networks (multidimensional recurrence
+quantification analysis) outlined above.</p>
+<p><span class="math inline">\(~\)</span></p>
+</div>
+<div id="combine-plots" class="section level1">
+<h1>Combine plots</h1>
+<p><span class="math inline">\(~\)</span></p>
+<p>Code below combines the aforementioned plots to produce Figure 5 of
+the manuscript.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>composite_plot <span class="ot">&lt;-</span> cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">plotlist =</span> <span class="fu">list</span>(megaviz_plot,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                  cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(raincloud_phases_plot,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                                     pca_traverse_plot)),</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">nrow =</span> <span class="dv">2</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co"># composite_plot</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">plot =</span> composite_plot,</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">filename =</span> <span class="fu">paste0</span>(<span class="st">&quot;attractor-viz/&quot;</span>, figure_identifier, <span class="st">&quot;/&quot;</span>, </span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>                         figure_identifier, <span class="st">&quot;_composite&quot;</span>, <span class="st">&quot;.png&quot;</span>),</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">height =</span> <span class="dv">16</span>, <span class="at">width =</span> <span class="dv">16</span>)</span></code></pre></div>
+</div>
+<div id="section-1" class="section level1 unnumbered">
+<h1 class="unnumbered"></h1>
+<p><span class="math inline">\(~\)</span></p>
+</div>
+<div id="session-information" class="section level1">
+<h1>Session information</h1>
+<p>Description of the R environment can be found below.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">session_info</span>()</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="do">## - Session info -------------</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="do">##  setting  value</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="do">##  version  R version 4.1.2 (2021-11-01)</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="do">##  os       Windows 10 x64 (build 19042)</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="do">##  system   x86_64, mingw32</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="do">##  ui       RStudio</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="do">##  language (EN)</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="do">##  collate  Finnish_Finland.1252</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="do">##  ctype    Finnish_Finland.1252</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="do">##  tz       Europe/Helsinki</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="do">##  date     2022-08-05</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="do">##  rstudio  2022.07.1+554 Spotted Wakerobin (desktop)</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="do">##  pandoc   2.18 @ C:/Program Files/RStudio/bin/quarto/bin/tools/ (via rmarkdown)</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="do">## - Packages -----------------</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="do">##  package       * version date (UTC) lib source</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="do">##  assertthat      0.2.1   2019-03-21 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="do">##  backports       1.4.1   2021-12-13 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="do">##  base64enc       0.1-3   2015-07-28 [1] CRAN (R 4.1.1)</span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="do">##  bit             4.0.4   2020-08-04 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="do">##  bit64           4.0.5   2020-08-30 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="do">##  broom           1.0.0   2022-07-01 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a><span class="do">##  bslib           0.4.0   2022-07-16 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a><span class="do">##  cachem          1.0.6   2021-08-19 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="do">##  callr           3.7.1   2022-07-13 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a><span class="do">##  casnet          0.2.6   2022-07-29 [1] Github (fredhasselman/casnet@5eeb1b3)</span></span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a><span class="do">##  cellranger      1.1.0   2016-07-27 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a><span class="do">##  cli             3.3.0   2022-04-25 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a><span class="do">##  codetools       0.2-18  2020-11-04 [2] CRAN (R 4.1.2)</span></span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a><span class="do">##  colorspace      2.0-3   2022-02-21 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a><span class="do">##  COVID19         3.0.2   2022-02-22 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a><span class="do">##  cowplot         1.1.1   2020-12-30 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a><span class="do">##  crayon          1.5.1   2022-03-26 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a><span class="do">##  curl            4.3.2   2021-06-23 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a><span class="do">##  data.table      1.14.2  2021-09-27 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a><span class="do">##  DBI             1.1.3   2022-06-18 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a><span class="do">##  dbplyr          2.2.1   2022-06-27 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a><span class="do">##  devtools        2.4.4   2022-07-20 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a><span class="do">##  digest          0.6.29  2021-12-01 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a><span class="do">##  doParallel      1.0.17  2022-02-07 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a><span class="do">##  dplyr         * 1.0.9   2022-04-28 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a><span class="do">##  ellipsis        0.3.2   2021-04-29 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a><span class="do">##  evaluate        0.15    2022-02-18 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a><span class="do">##  fansi           1.0.3   2022-03-24 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a><span class="do">##  farver          2.1.1   2022-07-06 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a><span class="do">##  fastmap         1.1.0   2021-01-25 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a><span class="do">##  forcats       * 0.5.1   2021-01-27 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a><span class="do">##  foreach         1.5.2   2022-02-02 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a><span class="do">##  fs              1.5.2   2021-12-08 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a><span class="do">##  gargle          1.2.0   2021-07-02 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a><span class="do">##  generics        0.1.3   2022-07-05 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a><span class="do">##  ggplot2       * 3.3.6   2022-05-03 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a><span class="do">##  ggrepel         0.9.1   2021-01-15 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a><span class="do">##  ggridges        0.5.3   2021-01-08 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a><span class="do">##  glue            1.6.2   2022-02-24 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a><span class="do">##  googledrive     2.0.0   2021-07-08 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a><span class="do">##  googlesheets4   1.0.0   2021-07-21 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a><span class="do">##  gridExtra       2.3     2017-09-09 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a><span class="do">##  gtable          0.3.0   2019-03-25 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a><span class="do">##  haven           2.5.0   2022-04-15 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a><span class="do">##  highr           0.9     2021-04-16 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a><span class="do">##  hms             1.1.1   2021-09-26 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a><span class="do">##  htmltools       0.5.3   2022-07-18 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a><span class="do">##  htmlwidgets     1.5.4   2021-09-08 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a><span class="do">##  httpuv          1.6.5   2022-01-05 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-67"><a href="#cb16-67" aria-hidden="true" tabindex="-1"></a><span class="do">##  httr            1.4.3   2022-05-04 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-68"><a href="#cb16-68" aria-hidden="true" tabindex="-1"></a><span class="do">##  igraph          1.3.4   2022-07-19 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-69"><a href="#cb16-69" aria-hidden="true" tabindex="-1"></a><span class="do">##  invctr          0.1.0   2019-03-07 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-70"><a href="#cb16-70" aria-hidden="true" tabindex="-1"></a><span class="do">##  iterators       1.0.14  2022-02-05 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-71"><a href="#cb16-71" aria-hidden="true" tabindex="-1"></a><span class="do">##  jquerylib       0.1.4   2021-04-26 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-72"><a href="#cb16-72" aria-hidden="true" tabindex="-1"></a><span class="do">##  jsonlite        1.8.0   2022-02-22 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-73"><a href="#cb16-73" aria-hidden="true" tabindex="-1"></a><span class="do">##  knitr           1.39    2022-04-26 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-74"><a href="#cb16-74" aria-hidden="true" tabindex="-1"></a><span class="do">##  labeling        0.4.2   2020-10-20 [1] CRAN (R 4.1.1)</span></span>
+<span id="cb16-75"><a href="#cb16-75" aria-hidden="true" tabindex="-1"></a><span class="do">##  later           1.3.0   2021-08-18 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-76"><a href="#cb16-76" aria-hidden="true" tabindex="-1"></a><span class="do">##  lattice         0.20-45 2021-09-22 [2] CRAN (R 4.1.2)</span></span>
+<span id="cb16-77"><a href="#cb16-77" aria-hidden="true" tabindex="-1"></a><span class="do">##  lifecycle       1.0.1   2021-09-24 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-78"><a href="#cb16-78" aria-hidden="true" tabindex="-1"></a><span class="do">##  lubridate       1.8.0   2021-10-07 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-79"><a href="#cb16-79" aria-hidden="true" tabindex="-1"></a><span class="do">##  magick          2.7.3   2021-08-18 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-80"><a href="#cb16-80" aria-hidden="true" tabindex="-1"></a><span class="do">##  magrittr        2.0.3   2022-03-30 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-81"><a href="#cb16-81" aria-hidden="true" tabindex="-1"></a><span class="do">##  Matrix          1.4-1   2022-03-23 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-82"><a href="#cb16-82" aria-hidden="true" tabindex="-1"></a><span class="do">##  memoise         2.0.1   2021-11-26 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-83"><a href="#cb16-83" aria-hidden="true" tabindex="-1"></a><span class="do">##  mime            0.12    2021-09-28 [1] CRAN (R 4.1.1)</span></span>
+<span id="cb16-84"><a href="#cb16-84" aria-hidden="true" tabindex="-1"></a><span class="do">##  miniUI          0.1.1.1 2018-05-18 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-85"><a href="#cb16-85" aria-hidden="true" tabindex="-1"></a><span class="do">##  modelr          0.1.8   2020-05-19 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-86"><a href="#cb16-86" aria-hidden="true" tabindex="-1"></a><span class="do">##  munsell         0.5.0   2018-06-12 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-87"><a href="#cb16-87" aria-hidden="true" tabindex="-1"></a><span class="do">##  pander          0.6.5   2022-03-18 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-88"><a href="#cb16-88" aria-hidden="true" tabindex="-1"></a><span class="do">##  pillar          1.8.0   2022-07-18 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-89"><a href="#cb16-89" aria-hidden="true" tabindex="-1"></a><span class="do">##  pkgbuild        1.3.1   2021-12-20 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-90"><a href="#cb16-90" aria-hidden="true" tabindex="-1"></a><span class="do">##  pkgconfig       2.0.3   2019-09-22 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-91"><a href="#cb16-91" aria-hidden="true" tabindex="-1"></a><span class="do">##  pkgload         1.3.0   2022-06-27 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-92"><a href="#cb16-92" aria-hidden="true" tabindex="-1"></a><span class="do">##  plyr            1.8.7   2022-03-24 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-93"><a href="#cb16-93" aria-hidden="true" tabindex="-1"></a><span class="do">##  prettyunits     1.1.1   2020-01-24 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-94"><a href="#cb16-94" aria-hidden="true" tabindex="-1"></a><span class="do">##  processx        3.7.0   2022-07-07 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-95"><a href="#cb16-95" aria-hidden="true" tabindex="-1"></a><span class="do">##  profvis         0.3.7   2020-11-02 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-96"><a href="#cb16-96" aria-hidden="true" tabindex="-1"></a><span class="do">##  progress        1.2.2   2019-05-16 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-97"><a href="#cb16-97" aria-hidden="true" tabindex="-1"></a><span class="do">##  promises        1.2.0.1 2021-02-11 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-98"><a href="#cb16-98" aria-hidden="true" tabindex="-1"></a><span class="do">##  proxy           0.4-27  2022-06-09 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-99"><a href="#cb16-99" aria-hidden="true" tabindex="-1"></a><span class="do">##  ps              1.7.1   2022-06-18 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-100"><a href="#cb16-100" aria-hidden="true" tabindex="-1"></a><span class="do">##  purrr         * 0.3.4   2020-04-17 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-101"><a href="#cb16-101" aria-hidden="true" tabindex="-1"></a><span class="do">##  R6              2.5.1   2021-08-19 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-102"><a href="#cb16-102" aria-hidden="true" tabindex="-1"></a><span class="do">##  ragg            1.2.2   2022-02-21 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-103"><a href="#cb16-103" aria-hidden="true" tabindex="-1"></a><span class="do">##  rayshader       0.27.4  2022-04-04 [1] Github (tylermorganwall/rayshader@d2e229d)</span></span>
+<span id="cb16-104"><a href="#cb16-104" aria-hidden="true" tabindex="-1"></a><span class="do">##  Rcpp            1.0.9   2022-07-08 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-105"><a href="#cb16-105" aria-hidden="true" tabindex="-1"></a><span class="do">##  readr         * 2.1.2   2022-01-30 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-106"><a href="#cb16-106" aria-hidden="true" tabindex="-1"></a><span class="do">##  readxl          1.4.0   2022-03-28 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-107"><a href="#cb16-107" aria-hidden="true" tabindex="-1"></a><span class="do">##  remotes         2.4.2   2021-11-30 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-108"><a href="#cb16-108" aria-hidden="true" tabindex="-1"></a><span class="do">##  reprex          2.0.1   2021-08-05 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-109"><a href="#cb16-109" aria-hidden="true" tabindex="-1"></a><span class="do">##  rgl             0.109.6 2022-07-08 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-110"><a href="#cb16-110" aria-hidden="true" tabindex="-1"></a><span class="do">##  rlang           1.0.4   2022-07-12 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-111"><a href="#cb16-111" aria-hidden="true" tabindex="-1"></a><span class="do">##  rmarkdown       2.14    2022-04-25 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-112"><a href="#cb16-112" aria-hidden="true" tabindex="-1"></a><span class="do">##  rstudioapi      0.13    2020-11-12 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-113"><a href="#cb16-113" aria-hidden="true" tabindex="-1"></a><span class="do">##  rvest           1.0.2   2021-10-16 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-114"><a href="#cb16-114" aria-hidden="true" tabindex="-1"></a><span class="do">##  sass            0.4.2   2022-07-16 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-115"><a href="#cb16-115" aria-hidden="true" tabindex="-1"></a><span class="do">##  scales          1.2.0   2022-04-13 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-116"><a href="#cb16-116" aria-hidden="true" tabindex="-1"></a><span class="do">##  sessioninfo     1.2.2   2021-12-06 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-117"><a href="#cb16-117" aria-hidden="true" tabindex="-1"></a><span class="do">##  shiny           1.7.2   2022-07-19 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-118"><a href="#cb16-118" aria-hidden="true" tabindex="-1"></a><span class="do">##  slider          0.2.2   2021-07-01 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-119"><a href="#cb16-119" aria-hidden="true" tabindex="-1"></a><span class="do">##  stringi         1.7.6   2021-11-29 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-120"><a href="#cb16-120" aria-hidden="true" tabindex="-1"></a><span class="do">##  stringr       * 1.4.0   2019-02-10 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-121"><a href="#cb16-121" aria-hidden="true" tabindex="-1"></a><span class="do">##  systemfonts     1.0.4   2022-02-11 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-122"><a href="#cb16-122" aria-hidden="true" tabindex="-1"></a><span class="do">##  textshaping     0.3.6   2021-10-13 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-123"><a href="#cb16-123" aria-hidden="true" tabindex="-1"></a><span class="do">##  tibble        * 3.1.8   2022-07-22 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-124"><a href="#cb16-124" aria-hidden="true" tabindex="-1"></a><span class="do">##  tidyr         * 1.2.0   2022-02-01 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-125"><a href="#cb16-125" aria-hidden="true" tabindex="-1"></a><span class="do">##  tidyselect      1.1.2   2022-02-21 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-126"><a href="#cb16-126" aria-hidden="true" tabindex="-1"></a><span class="do">##  tidyverse     * 1.3.2   2022-07-18 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-127"><a href="#cb16-127" aria-hidden="true" tabindex="-1"></a><span class="do">##  tzdb            0.3.0   2022-03-28 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-128"><a href="#cb16-128" aria-hidden="true" tabindex="-1"></a><span class="do">##  urlchecker      1.0.1   2021-11-30 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-129"><a href="#cb16-129" aria-hidden="true" tabindex="-1"></a><span class="do">##  usethis         2.1.6   2022-05-25 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-130"><a href="#cb16-130" aria-hidden="true" tabindex="-1"></a><span class="do">##  utf8            1.2.2   2021-07-24 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-131"><a href="#cb16-131" aria-hidden="true" tabindex="-1"></a><span class="do">##  vctrs           0.4.1   2022-04-13 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-132"><a href="#cb16-132" aria-hidden="true" tabindex="-1"></a><span class="do">##  viridis         0.6.2   2021-10-13 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-133"><a href="#cb16-133" aria-hidden="true" tabindex="-1"></a><span class="do">##  viridisLite     0.4.0   2021-04-13 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-134"><a href="#cb16-134" aria-hidden="true" tabindex="-1"></a><span class="do">##  vroom           1.5.7   2021-11-30 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-135"><a href="#cb16-135" aria-hidden="true" tabindex="-1"></a><span class="do">##  warp            0.2.0   2020-10-21 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-136"><a href="#cb16-136" aria-hidden="true" tabindex="-1"></a><span class="do">##  withr           2.5.0   2022-03-03 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-137"><a href="#cb16-137" aria-hidden="true" tabindex="-1"></a><span class="do">##  writexl         1.4.0   2021-04-20 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-138"><a href="#cb16-138" aria-hidden="true" tabindex="-1"></a><span class="do">##  xfun            0.31    2022-05-10 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-139"><a href="#cb16-139" aria-hidden="true" tabindex="-1"></a><span class="do">##  xml2            1.3.3   2021-11-30 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-140"><a href="#cb16-140" aria-hidden="true" tabindex="-1"></a><span class="do">##  xtable          1.8-4   2019-04-21 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-141"><a href="#cb16-141" aria-hidden="true" tabindex="-1"></a><span class="do">##  xts             0.12.1  2020-09-09 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-142"><a href="#cb16-142" aria-hidden="true" tabindex="-1"></a><span class="do">##  yaml            2.3.5   2022-02-21 [1] CRAN (R 4.1.2)</span></span>
+<span id="cb16-143"><a href="#cb16-143" aria-hidden="true" tabindex="-1"></a><span class="do">##  zoo             1.8-10  2022-04-15 [1] CRAN (R 4.1.3)</span></span>
+<span id="cb16-144"><a href="#cb16-144" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb16-145"><a href="#cb16-145" aria-hidden="true" tabindex="-1"></a><span class="do">##  [1] C:/rlibs/4.1.2</span></span>
+<span id="cb16-146"><a href="#cb16-146" aria-hidden="true" tabindex="-1"></a><span class="do">##  [2] C:/Program Files/R/R-4.1.2/library</span></span>
+<span id="cb16-147"><a href="#cb16-147" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb16-148"><a href="#cb16-148" aria-hidden="true" tabindex="-1"></a><span class="do">## ----------------------------</span></span>
+<span id="cb16-149"><a href="#cb16-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-150"><a href="#cb16-150" aria-hidden="true" tabindex="-1"></a>pander<span class="sc">::</span><span class="fu">pander</span>(<span class="fu">sessionInfo</span>())</span></code></pre></div>
+<p><strong>R version 4.1.2 (2021-11-01)</strong></p>
+<p><strong>Platform:</strong> x86_64-w64-mingw32/x64 (64-bit)</p>
+<p><strong>locale:</strong> <em>LC_COLLATE=Finnish_Finland.1252</em>,
+<em>LC_CTYPE=Finnish_Finland.1252</em>,
+<em>LC_MONETARY=Finnish_Finland.1252</em>, <em>LC_NUMERIC=C</em> and
+<em>LC_TIME=Finnish_Finland.1252</em></p>
+<p><strong>attached base packages:</strong> <em>stats</em>,
+<em>graphics</em>, <em>grDevices</em>, <em>utils</em>,
+<em>datasets</em>, <em>methods</em> and <em>base</em></p>
+<p><strong>other attached packages:</strong> <em>forcats(v.0.5.1)</em>,
+<em>stringr(v.1.4.0)</em>, <em>dplyr(v.1.0.9)</em>,
+<em>purrr(v.0.3.4)</em>, <em>readr(v.2.1.2)</em>,
+<em>tidyr(v.1.2.0)</em>, <em>tibble(v.3.1.8)</em>,
+<em>ggplot2(v.3.3.6)</em> and <em>tidyverse(v.1.3.2)</em></p>
+<p><strong>loaded via a namespace (and not attached):</strong>
+<em>googledrive(v.2.0.0)</em>, <em>colorspace(v.2.0-3)</em>,
+<em>slider(v.0.2.2)</em>, <em>ellipsis(v.0.3.2)</em>,
+<em>ggridges(v.0.5.3)</em>, <em>base64enc(v.0.1-3)</em>,
+<em>fs(v.1.5.2)</em>, <em>proxy(v.0.4-27)</em>,
+<em>rstudioapi(v.0.13)</em>, <em>farver(v.2.1.1)</em>,
+<em>remotes(v.2.4.2)</em>, <em>bit64(v.4.0.5)</em>,
+<em>ggrepel(v.0.9.1)</em>, <em>fansi(v.1.0.3)</em>,
+<em>lubridate(v.1.8.0)</em>, <em>xml2(v.1.3.3)</em>,
+<em>codetools(v.0.2-18)</em>, <em>doParallel(v.1.0.17)</em>,
+<em>cachem(v.1.0.6)</em>, <em>knitr(v.1.39)</em>,
+<em>pkgload(v.1.3.0)</em>, <em>jsonlite(v.1.8.0)</em>,
+<em>broom(v.1.0.0)</em>, <em>dbplyr(v.2.2.1)</em>,
+<em>shiny(v.1.7.2)</em>, <em>compiler(v.4.1.2)</em>,
+<em>httr(v.1.4.3)</em>, <em>backports(v.1.4.1)</em>,
+<em>assertthat(v.0.2.1)</em>, <em>Matrix(v.1.4-1)</em>,
+<em>fastmap(v.1.1.0)</em>, <em>gargle(v.1.2.0)</em>,
+<em>cli(v.3.3.0)</em>, <em>later(v.1.3.0)</em>,
+<em>htmltools(v.0.5.3)</em>, <em>prettyunits(v.1.1.1)</em>,
+<em>tools(v.4.1.2)</em>, <em>igraph(v.1.3.4)</em>,
+<em>gtable(v.0.3.0)</em>, <em>glue(v.1.6.2)</em>,
+<em>Rcpp(v.1.0.9)</em>, <em>cellranger(v.1.1.0)</em>,
+<em>jquerylib(v.0.1.4)</em>, <em>invctr(v.0.1.0)</em>,
+<em>vctrs(v.0.4.1)</em>, <em>writexl(v.1.4.0)</em>,
+<em>COVID19(v.3.0.2)</em>, <em>iterators(v.1.0.14)</em>,
+<em>casnet(v.0.2.6)</em>, <em>xfun(v.0.31)</em>, <em>ps(v.1.7.1)</em>,
+<em>rvest(v.1.0.2)</em>, <em>mime(v.0.12)</em>,
+<em>miniUI(v.0.1.1.1)</em>, <em>lifecycle(v.1.0.1)</em>,
+<em>devtools(v.2.4.4)</em>, <em>googlesheets4(v.1.0.0)</em>,
+<em>zoo(v.1.8-10)</em>, <em>scales(v.1.2.0)</em>,
+<em>vroom(v.1.5.7)</em>, <em>ragg(v.1.2.2)</em>, <em>hms(v.1.1.1)</em>,
+<em>promises(v.1.2.0.1)</em>, <em>parallel(v.4.1.2)</em>,
+<em>curl(v.4.3.2)</em>, <em>yaml(v.2.3.5)</em>,
+<em>memoise(v.2.0.1)</em>, <em>gridExtra(v.2.3)</em>,
+<em>pander(v.0.6.5)</em>, <em>sass(v.0.4.2)</em>,
+<em>stringi(v.1.7.6)</em>, <em>highr(v.0.9)</em>,
+<em>foreach(v.1.5.2)</em>, <em>rayshader(v.0.27.4)</em>,
+<em>warp(v.0.2.0)</em>, <em>pkgbuild(v.1.3.1)</em>,
+<em>systemfonts(v.1.0.4)</em>, <em>rlang(v.1.0.4)</em>,
+<em>pkgconfig(v.2.0.3)</em>, <em>rgl(v.0.109.6)</em>,
+<em>evaluate(v.0.15)</em>, <em>lattice(v.0.20-45)</em>,
+<em>labeling(v.0.4.2)</em>, <em>htmlwidgets(v.1.5.4)</em>,
+<em>bit(v.4.0.4)</em>, <em>cowplot(v.1.1.1)</em>,
+<em>processx(v.3.7.0)</em>, <em>tidyselect(v.1.1.2)</em>,
+<em>plyr(v.1.8.7)</em>, <em>magrittr(v.2.0.3)</em>,
+<em>R6(v.2.5.1)</em>, <em>magick(v.2.7.3)</em>,
+<em>generics(v.0.1.3)</em>, <em>profvis(v.0.3.7)</em>,
+<em>DBI(v.1.1.3)</em>, <em>pillar(v.1.8.0)</em>,
+<em>haven(v.2.5.0)</em>, <em>withr(v.2.5.0)</em>,
+<em>xts(v.0.12.1)</em>, <em>modelr(v.0.1.8)</em>,
+<em>crayon(v.1.5.1)</em>, <em>utf8(v.1.2.2)</em>,
+<em>tzdb(v.0.3.0)</em>, <em>rmarkdown(v.2.14)</em>,
+<em>urlchecker(v.1.0.1)</em>, <em>viridis(v.0.6.2)</em>,
+<em>progress(v.1.2.2)</em>, <em>usethis(v.2.1.6)</em>,
+<em>grid(v.4.1.2)</em>, <em>readxl(v.1.4.0)</em>,
+<em>data.table(v.1.14.2)</em>, <em>callr(v.3.7.1)</em>,
+<em>reprex(v.2.0.1)</em>, <em>digest(v.0.6.29)</em>,
+<em>xtable(v.1.8-4)</em>, <em>httpuv(v.1.6.5)</em>,
+<em>textshaping(v.0.3.6)</em>, <em>munsell(v.0.5.0)</em>,
+<em>viridisLite(v.0.4.0)</em>, <em>bslib(v.0.4.0)</em> and
+<em>sessioninfo(v.1.2.2)</em></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
