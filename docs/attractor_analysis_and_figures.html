@@ -453,7 +453,8 @@ attractor landscape</h1>
 </div>
 
 
-<p>Source code for this document is found <a href="">here</a>.</p>
+<p>Source code for this document is found <a
+href="https://raw.githubusercontent.com/heinonmatti/attractor-manuscript/main/attractor_analysis_and_figures.Rmd">here</a>.</p>
 <div id="section" class="section level1 unnumbered">
 <h1 class="unnumbered"></h1>
 <hr />
@@ -476,32 +477,39 @@ the Finnish context, can be reported as currently residing in Finland.
 Facebook does not have access to survey data, and University of Maryland
 does not have access to Facebook data; hence, the person would result in
 the Finnish dataset, but with their German sampling weight.</p>
-<p>Relevant articles detailing the data collection methodology and
-weighting procedures:</p>
-<p>Astley, C. M., Tuli, G., Mc Cord, K. A., Cohn, E. L., Rader, B.,
+<p>References detailing the data collection methodology and weighting
+procedures:</p>
+<ol style="list-style-type: decimal">
+<li><p>Astley, C. M., Tuli, G., Mc Cord, K. A., Cohn, E. L., Rader, B.,
 Varrelman, T. J., Chiu, S. L., Deng, X., Stewart, K., Farag, T. H.,
 Barkume, K. M., LaRocca, S., Morris, K. A., Kreuter, F., &amp;
 Brownstein, J. S. (2021). Global monitoring of the impact of the
 COVID-19 pandemic through online surveys sampled from the Facebook user
 base. Proceedings of the National Academy of Sciences, 118(51),
 e2111455118. <a href="https://doi.org/10.1073/pnas.2111455118"
-class="uri">https://doi.org/10.1073/pnas.2111455118</a></p>
-<p>Barkay, N., Cobb, C., Eilat, R., Galili, T., Haimovich, D., LaRocca,
-S., Morris, K., &amp; Sarig, T. (2020). Weights and Methodology Brief
-for the COVID-19 Symptom Survey by University of Maryland and Carnegie
-Mellon University, in Partnership with Facebook. ArXiv:2009.14675 [Cs].
-<a href="http://arxiv.org/abs/2009.14675"
-class="uri">http://arxiv.org/abs/2009.14675</a></p>
-<p>Fan, J., Li, Y., Stewart, K., Kommareddy, A. R., Garcia, A., O’Brien,
-J., Bradford, A., Deng, X., Chiu, S., Kreuter, F., Barkay, N., Bilinski,
-A., Kim, B., Galili, T., Haimovich, D., LaRocca, S., Presser, S.,
-Morris, K., Salomon, J. A., … Vannette, D. (2020). The University of
+class="uri">https://doi.org/10.1073/pnas.2111455118</a></p></li>
+<li><p>Barkay, N., Cobb, C., Eilat, R., Galili, T., Haimovich, D.,
+LaRocca, S., Morris, K., &amp; Sarig, T. (2020). Weights and Methodology
+Brief for the COVID-19 Symptom Survey by University of Maryland and
+Carnegie Mellon University, in Partnership with Facebook.
+ArXiv:2009.14675 [Cs]. <a href="http://arxiv.org/abs/2009.14675"
+class="uri">http://arxiv.org/abs/2009.14675</a></p></li>
+<li><p>Fan, J., Li, Y., Stewart, K., Kommareddy, A. R., Garcia, A.,
+O’Brien, J., Bradford, A., Deng, X., Chiu, S., Kreuter, F., Barkay, N.,
+Bilinski, A., Kim, B., Galili, T., Haimovich, D., LaRocca, S., Presser,
+S., Morris, K., Salomon, J. A., … Vannette, D. (2020). The University of
 Maryland Social Data Science Center Global COVID-19 Trends and Impact
 Survey, in partnership with Facebook. The Global COVID-19 Trends and
 Impact Survey Open Data API. <a href="https://covidmap.umd.edu/api.html"
-class="uri">https://covidmap.umd.edu/api.html</a></p>
+class="uri">https://covidmap.umd.edu/api.html</a></p></li>
+</ol>
 <p>In the following code chunk, we download and preprocess the data
-using R.</p>
+using R. To see the code, please click the “Code”-button on the right
+hand side below. For the source code of data_preparation.R, which was
+used to download the data from CTIS API (and can be repurposed to
+downloading other countries’ data by changing the value of
+<em>country_in_question</em>), see <a
+href="https://raw.githubusercontent.com/heinonmatti/attractor-manuscript/main/data_preparation.R">here</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">echo =</span> <span class="cn">TRUE</span>, </span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">warning =</span> <span class="cn">FALSE</span>,</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">message =</span> <span class="cn">FALSE</span>,</span>
@@ -630,7 +638,7 @@ preparation steps worked as intended.</p>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="sc">+</span></span>
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>name)</span></code></pre></div>
-<p><img src="attractor_analysis_and_figures_files/figure-html/unnamed-chunk-31-1.png" width="2100" /></p>
+<p><img src="attractor_analysis_and_figures_files/figure-html/unnamed-chunk-2-1.png" width="2100" /></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>df_analysis_rescaled <span class="sc">%&gt;%</span> </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span>date) <span class="sc">%&gt;%</span> </span>
@@ -647,7 +655,7 @@ preparation steps worked as intended.</p>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="sc">+</span></span>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>name)</span></code></pre></div>
-<p><img src="attractor_analysis_and_figures_files/figure-html/unnamed-chunk-31-2.png" width="2100" /></p>
+<p><img src="attractor_analysis_and_figures_files/figure-html/unnamed-chunk-2-2.png" width="2100" /></p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>df_analysis_rescaled_smoothed <span class="sc">%&gt;%</span> </span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span>date) <span class="sc">%&gt;%</span> </span>
@@ -664,7 +672,7 @@ preparation steps worked as intended.</p>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="sc">+</span></span>
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>name)</span></code></pre></div>
-<p><img src="attractor_analysis_and_figures_files/figure-html/unnamed-chunk-31-3.png" width="2100" /></p>
+<p><img src="attractor_analysis_and_figures_files/figure-html/unnamed-chunk-2-3.png" width="2100" /></p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="do">### If you want to display a simple mean of the variables</span></span>
@@ -687,7 +695,11 @@ preparation steps worked as intended.</p>
 <div id="figure-1-of-the-manuscript" class="section level2">
 <h2>Figure 1 of the manuscript</h2>
 <p>Code below creates the first figure of the manuscript, depicting
-nonlinear change.</p>
+nonlinear change. Note that there is a very long dataset of this
+particular variable, but the survey items used for the main analysis
+were only added much later (that is, June 2021). Different survey
+versions can be found <a
+href="https://gisumd.github.io/COVID-19-API-Documentation/docs/survey_instruments.html">here</a>.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>masks_for_figure <span class="ot">&lt;-</span> df_masks_allwaves <span class="sc">%&gt;%</span> </span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">percent_mc_unw =</span> percent_mc_unw <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">%&gt;%</span> </span>
@@ -713,7 +725,7 @@ nonlinear change.</p>
 <span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
 <span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>masks_for_figure</span></code></pre></div>
-<p><img src="attractor_analysis_and_figures_files/figure-html/unnamed-chunk-32-1.png" width="2100" /></p>
+<p><img src="attractor_analysis_and_figures_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">plot =</span> masks_for_figure,</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">filename =</span> <span class="fu">paste0</span>(<span class="st">&quot;attractor-viz/&quot;</span>, figure_identifier,</span>
@@ -950,7 +962,7 @@ class="uri">https://doi.org/10/gf3ckk</a></p>
 <span id="cb9-119"><a href="#cb9-119" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">30</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span>
 <span id="cb9-120"><a href="#cb9-120" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-121"><a href="#cb9-121" aria-hidden="true" tabindex="-1"></a>megaviz_plot</span></code></pre></div>
-<p><img src="attractor_analysis_and_figures_files/figure-html/unnamed-chunk-33-1.png" width="2100" /></p>
+<p><img src="attractor_analysis_and_figures_files/figure-html/unnamed-chunk-4-1.png" width="2100" /></p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">plot =</span> megaviz_plot,</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">filename =</span> <span class="fu">paste0</span>(<span class="st">&quot;attractor-viz/&quot;</span>, figure_identifier,</span>
@@ -1003,7 +1015,7 @@ class="uri">https://doi.org/10/gf3ckk</a></p>
 <span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>end_time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
 <span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>end_time <span class="sc">-</span> start_time</span>
-<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a><span class="do">## Time difference of 13.98741 mins</span></span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a><span class="do">## Time difference of 22.66497 mins</span></span>
 <span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>parallel<span class="sc">::</span><span class="fu">stopCluster</span>(cl)</span>
 <span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a></span>
@@ -1099,7 +1111,7 @@ class="uri">https://doi.org/10/gfxr7w</a></p>
 <span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
 <span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a>raincloud_phases_plot</span></code></pre></div>
-<p><img src="attractor_analysis_and_figures_files/figure-html/unnamed-chunk-34-1.png" width="2100" /></p>
+<p><img src="attractor_analysis_and_figures_files/figure-html/unnamed-chunk-5-1.png" width="2100" /></p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">plot =</span> raincloud_phases_plot,</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">filename =</span> <span class="fu">paste0</span>(<span class="st">&quot;attractor-viz/&quot;</span>, figure_identifier, <span class="st">&quot;/&quot;</span>, </span>
@@ -1198,7 +1210,7 @@ class="uri">https://doi.org/10.1038/s41598-021-87839-y</a></p>
 <span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">22</span>)</span>
 <span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a>pca_traverse_plot</span></code></pre></div>
-<p><img src="attractor_analysis_and_figures_files/figure-html/unnamed-chunk-35-1.png" width="2100" /></p>
+<p><img src="attractor_analysis_and_figures_files/figure-html/unnamed-chunk-6-1.png" width="2100" /></p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">plot =</span> pca_traverse_plot,</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">filename =</span> <span class="fu">paste0</span>(<span class="st">&quot;attractor-viz/&quot;</span>, figure_identifier, <span class="st">&quot;/&quot;</span>, </span>
@@ -1209,38 +1221,14 @@ class="uri">https://doi.org/10.1038/s41598-021-87839-y</a></p>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pcout)</span>
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Importance of components:</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="do">##                           Comp.1</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Standard deviation     0.1360643</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Proportion of Variance 0.6839028</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Cumulative Proportion  0.6839028</span></span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="do">##                            Comp.2</span></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Standard deviation     0.07416828</span></span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="do">## Proportion of Variance 0.20320887</span></span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="do">## Cumulative Proportion  0.88711166</span></span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="do">##                            Comp.3</span></span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="do">## Standard deviation     0.03621596</span></span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="do">## Proportion of Variance 0.04845139</span></span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="do">## Cumulative Proportion  0.93556305</span></span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="do">##                            Comp.4</span></span>
-<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a><span class="do">## Standard deviation     0.03032936</span></span>
-<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="do">## Proportion of Variance 0.03398073</span></span>
-<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="do">## Cumulative Proportion  0.96954379</span></span>
-<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a><span class="do">##                            Comp.5</span></span>
-<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a><span class="do">## Standard deviation     0.02013987</span></span>
-<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a><span class="do">## Proportion of Variance 0.01498372</span></span>
-<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a><span class="do">## Cumulative Proportion  0.98452751</span></span>
-<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a><span class="do">##                             Comp.6</span></span>
-<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a><span class="do">## Standard deviation     0.014321976</span></span>
-<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a><span class="do">## Proportion of Variance 0.007577258</span></span>
-<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a><span class="do">## Cumulative Proportion  0.992104767</span></span>
-<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a><span class="do">##                             Comp.7</span></span>
-<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a><span class="do">## Standard deviation     0.012357487</span></span>
-<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a><span class="do">## Proportion of Variance 0.005641136</span></span>
-<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a><span class="do">## Cumulative Proportion  0.997745903</span></span>
-<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a><span class="do">##                             Comp.8</span></span>
-<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a><span class="do">## Standard deviation     0.007811478</span></span>
-<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a><span class="do">## Proportion of Variance 0.002254097</span></span>
-<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a><span class="do">## Cumulative Proportion  1.000000000</span></span></code></pre></div>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="do">##                           Comp.1     Comp.2     Comp.3     Comp.4     Comp.5</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Standard deviation     0.1360643 0.07416828 0.03621596 0.03032936 0.02013987</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Proportion of Variance 0.6839028 0.20320887 0.04845139 0.03398073 0.01498372</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Cumulative Proportion  0.6839028 0.88711166 0.93556305 0.96954379 0.98452751</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="do">##                             Comp.6      Comp.7      Comp.8</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Standard deviation     0.014321976 0.012357487 0.007811478</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="do">## Proportion of Variance 0.007577258 0.005641136 0.002254097</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="do">## Cumulative Proportion  0.992104767 0.997745903 1.000000000</span></span></code></pre></div>
 <p>The first principal component captures 68.4 % of variance, and the
 second captures 20.3 % of variance. This leaves 11.3 % of variance
 unused in this analysis.</p>
@@ -1276,7 +1264,7 @@ the manuscript.</p>
 <h1>Session information</h1>
 <p>Description of the R environment can be found below.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">session_info</span>()</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="do">## - Session info -------------</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="do">## - Session info -----------------</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="do">##  setting  value</span></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="do">##  version  R version 4.1.2 (2021-11-01)</span></span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="do">##  os       Windows 10 x64 (build 19042)</span></span>
@@ -1286,11 +1274,11 @@ the manuscript.</p>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="do">##  collate  Finnish_Finland.1252</span></span>
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="do">##  ctype    Finnish_Finland.1252</span></span>
 <span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="do">##  tz       Europe/Helsinki</span></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="do">##  date     2022-08-05</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="do">##  date     2022-08-07</span></span>
 <span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="do">##  rstudio  2022.07.1+554 Spotted Wakerobin (desktop)</span></span>
 <span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="do">##  pandoc   2.18 @ C:/Program Files/RStudio/bin/quarto/bin/tools/ (via rmarkdown)</span></span>
 <span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="do">## - Packages -----------------</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="do">## - Packages ---------------------</span></span>
 <span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="do">##  package       * version date (UTC) lib source</span></span>
 <span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="do">##  assertthat      0.2.1   2019-03-21 [1] CRAN (R 4.1.2)</span></span>
 <span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="do">##  backports       1.4.1   2021-12-13 [1] CRAN (R 4.1.2)</span></span>
@@ -1422,7 +1410,7 @@ the manuscript.</p>
 <span id="cb16-145"><a href="#cb16-145" aria-hidden="true" tabindex="-1"></a><span class="do">##  [1] C:/rlibs/4.1.2</span></span>
 <span id="cb16-146"><a href="#cb16-146" aria-hidden="true" tabindex="-1"></a><span class="do">##  [2] C:/Program Files/R/R-4.1.2/library</span></span>
 <span id="cb16-147"><a href="#cb16-147" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb16-148"><a href="#cb16-148" aria-hidden="true" tabindex="-1"></a><span class="do">## ----------------------------</span></span>
+<span id="cb16-148"><a href="#cb16-148" aria-hidden="true" tabindex="-1"></a><span class="do">## --------------------------------</span></span>
 <span id="cb16-149"><a href="#cb16-149" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-150"><a href="#cb16-150" aria-hidden="true" tabindex="-1"></a>pander<span class="sc">::</span><span class="fu">pander</span>(<span class="fu">sessionInfo</span>())</span></code></pre></div>
 <p><strong>R version 4.1.2 (2021-11-01)</strong></p>
