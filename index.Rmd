@@ -6,8 +6,8 @@ title: "Index"
 
 This supplementary website details the analysis related to the manuscript:
 
-Heino, M. T. J., Proverbio, D., Resnicow, K., Marchand, G., & Hankonen, N. (2022). *Attractor landscapes: A unifying conceptual model for understanding behaviour change across scales of observation.* Preprint DOI: 10.31234/osf.io/3rxyd
+Heino, M. T. J., Proverbio, D., Resnicow, K., Marchand, G., & Hankonen, N. (2022). *Attractor landscapes: A unifying conceptual model for understanding behaviour change across scales of observation.* Health psychology Review. https://doi.org/10.1080/17437199.2022.2146598
 
-Preprint can be found here: [https://psyarxiv.com/3rxyd/](https://psyarxiv.com/3rxyd/)
+Preprint DOI: 10.31234/osf.io/3rxyd
 
 Please use the top bar for navigation, and toggle the buttons marked "Code" to display the code used.

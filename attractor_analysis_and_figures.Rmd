@@ -253,7 +253,7 @@ For each analysis, the recurrence matrix is considered an adjacency matrix of a 
 
 In the last stage of analysis, for each radius value inspected, phases (regions of attraction) are extracted from the recurrence network. The procedure of the algorithm is as follows:
 
-1. Identify the node with the highest strength (i.e. the sum of weights of edges times the number of edges) attached to the node.
+1. Identify the node with the highest strength (i.e. the sum of weights of edges times the number of edges connected to the node).
 
 2. Identify which nodes connect to this high-strength node, and mark these as belonging to the same phase (area of attraction in the phase space).  
 
